@@ -4,52 +4,31 @@ import numpy as np
 import pickle
 
 # Preprocessing Libraries
-import contractions
-import string
-import spacy
-import demoji
-from spacy import displacy
 from spacy.lang.en.stop_words import STOP_WORDS
-from collections import Counter
-import nltk
-from nltk.corpus import stopwords
-from imblearn.over_sampling import SMOTE
 
 # Visualization Libraries
-import plotly.express as px
-import plotly.graph_objects as go
 pd.options.display.max_rows = 10
 pd.plotting.register_matplotlib_converters()
 import matplotlib.pyplot as plt
-import seaborn as sns
-import matplotlib.image as mpimg
 import warnings
 warnings.filterwarnings('ignore')
 
 # ML Libraries
-import xgboost as xgb
 from sklearn.svm import SVC
-from sklearn import preprocessing, model_selection, metrics
+from sklearn import metrics
 from sklearn.model_selection import GridSearchCV
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay, f1_score
+from sklearn.metrics import classification_report, f1_score
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.decomposition import TruncatedSVD
-from joblib import Parallel, delayed
 
 # Other Libraries
 import os
 import sys
-import time
-import csv
-import json
-import re
-
 
 class ModelTraining(object):
   def __init__(self):

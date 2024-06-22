@@ -1,0 +1,13 @@
+matplotlib==3.8.2
+matplotlib-inline==0.1.7
+scikit-learn==1.4.2
+pandas==2.2.2
+plotly==5.22.0
+contractions==0.1.73
+demoji==1.1.0
+spacy==3.7.4
+spacy-legacy==3.0.12
+spacy-loggers==1.0.5
+streamlit==1.36.0
+ollama==0.2.1
+kaleido==0.2.1
