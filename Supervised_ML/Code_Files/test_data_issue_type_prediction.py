@@ -45,14 +45,17 @@ class IssueTypePrediction(object):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
             self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
+            self.saved_pie_chart_img_path = os.getcwd() + "/../Saved_Images/"
         elif sys.platform.startswith("darwin"):
             self.path = os.getcwd() + "/Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
             self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
+            self.saved_pie_chart_img_path = os.getcwd() + "/Saved_Images/"
         elif sys.platform.startswith("linux"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
             self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
+            self.saved_pie_chart_img_path = os.getcwd() + "/../Saved_Images/"
 
         self.nlp = spacy.load("en_core_web_lg")
         self.matcher = PhraseMatcher(self.nlp.vocab)
@@ -111,8 +114,9 @@ class IssueTypePrediction(object):
               row=1, col=i+1
           )
 
-      fig.update_layout(title_text='Distribution of Reviews for Trustpilot and PowerReviews')
-      fig.show()
+      # fig.update_layout(title_text='Distribution of Reviews for Trustpilot and PowerReviews')i 
+      # fig.show()
+      fig.write_image(self.saved_pie_chart_img_path + "pie_chart.png", engine='kaleido', scale=1)
 
     def get_issue_distribution_per_platform(self):
         df = pd.read_csv(self.issue_predicted_data)
@@ -176,8 +180,11 @@ class IssueTypePrediction(object):
 
             figures.append(fig)
         
+        fig_counter = 1
         for fig in figures:
-            fig.show()
+            # fig.show()
+            fig.write_image(self.saved_pie_chart_img_path + f"issue_distribution_fig_{str(fig_counter)}.png", engine='kaleido', scale=1)
+            fig_counter += 1
 
 
     def main(self):
