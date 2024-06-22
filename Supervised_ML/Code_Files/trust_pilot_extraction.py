@@ -17,6 +17,8 @@ class TrustPilot(object):
             self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
         elif sys.platform.startswith("darwin"):
             self.trust_pilot_data_path = os.getcwd() + "/Data_Files/trustpilot_all_reviews_api.csv"
+        elif sys.platform.startswith("linux"):
+            self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
         
     # Fetching business unit ID
     def get_business_id(self):

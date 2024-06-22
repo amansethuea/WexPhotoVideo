@@ -21,6 +21,12 @@ class ClubPlatformReviews(object):
             self.fetched_reviews_to_test = os.getcwd() + "/Model_Train_Data_Files/fetched_test_reviews.csv"
             self.trust_pilot_df = pd.read_csv(self.trust_pilot_data_path)
             self.power_reviews_df = pd.read_csv(self.power_reviews_data_path)
+        elif sys.platform.startswith("linux"):
+            self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
+            self.power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+            self.trust_pilot_df = pd.read_csv(self.trust_pilot_data_path)
+            self.power_reviews_df = pd.read_csv(self.power_reviews_data_path)
+            self.fetched_reviews_to_test = os.getcwd() + "/../Model_Train_Data_Files/fetched_test_reviews.csv"
     
     def club_reviews(self):
         # Remove unimportant columns from Trust Pilot dataframe

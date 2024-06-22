@@ -1,0 +1,31 @@
+Linux - Ollama Issue resolution
+
+If facing: httpx.ConnectError: [Errno 111] Connection refused
+Run the following:-
+ollama start
+
+If output is: Command 'ollama' not found,
+Run the following:-
+sudo snap install ollama
+
+Run again: ollama start
+
+If facing: Error: listen tcp 127.0.0.1:11434: bind: address already in use
+Run the following:-
+ollama pull llama3
+
+Then finally perform following checks:-
+sudo netstat -tuln | grep LISTEN
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:43807         0.0.0.0:*               LISTEN
+tcp        0      0 10.255.255.254:53       0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:11434         0.0.0.0:*               LISTEN
+
+
+The above output shows 127.0.0.1:11434 which is ollama service. Verify by following command:-
+sudo lsof -i :11434
+COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+ollama  45827 root    3u  IPv4 754432      0t0  TCP localhost:11434 (LISTEN)
+
+
+#######################################################################################################

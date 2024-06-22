@@ -46,6 +46,10 @@ class ModelPrediction(object):
        self.path = os.getcwd() + "/Model_Train_Data_Files/"
        self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
        self.saved_models_path = os.getcwd() + "/Saved_Models/"
+    elif sys.platform.startswith("linux"):
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
+        self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for predictio 
+        self.saved_models_path = os.getcwd() + "/../Saved_Models/"
     
     self.predicted_data = 'final_ml_predictions_approach3.csv'
     self.svc_model_name = "model_svc_test.sav"

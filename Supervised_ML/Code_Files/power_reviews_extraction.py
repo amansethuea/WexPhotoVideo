@@ -21,6 +21,8 @@ class PowerReviews(object):
             self.power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
         elif sys.platform.startswith("darwin"):
             self.power_reviews_data_path = os.getcwd() + "/Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("linux"):
+            self.power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
     
     def get_time_range(self):
         if re.search(". *[a-zA-Z]. *", self.date_range):

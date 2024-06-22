@@ -47,6 +47,10 @@ class CleanAndPreprocess(object):
        self.path = os.getcwd() + "/Model_Train_Data_Files/"
        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
        self.cleaned_preprocessed_data = os.getcwd() + "/Model_Train_Data/Files/cleaned_test_data_approach3.csv"
+    elif sys.platform.startswith("linux"):
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+        self.cleaned_preprocessed_data = os.getcwd() + "/../Model_Train_Data_Files/cleaned_test_data_approach3.csv"
 
   def create_sentiment_labels(self, rating):
     rating = int(rating)

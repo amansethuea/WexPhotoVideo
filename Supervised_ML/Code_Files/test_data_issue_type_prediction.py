@@ -45,9 +45,12 @@ class IssueTypePrediction(object):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
             self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
-
         elif sys.platform.startswith("darwin"):
             self.path = os.getcwd() + "/Model_Train_Data_Files/"
+            self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
+            self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
+        elif sys.platform.startswith("linux"):
+            self.path = os.getcwd() + "/../Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv') # Data with predictions
             self.issue_predicted_data = self.path + 'ml_predictions_with_issue_types.csv' # Data with issues prediction
 
