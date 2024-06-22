@@ -60,7 +60,8 @@ class ReasonBehindIssuePrediction(object):
         print(f"Total time taken to fetch {review_counter - 1} reviews is {total_time:.2f} seconds")
         print("END: Reason behind issues prediction complete")
         print()
-        
+       
+
 if __name__ == "__main__":
     obj = ReasonBehindIssuePrediction()
     obj.reason_prediction(max_workers=10)

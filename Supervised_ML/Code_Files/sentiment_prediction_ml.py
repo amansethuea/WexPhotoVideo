@@ -37,7 +37,7 @@ class SentimentPredictionML(object):
     def issue_predicted_data(self):
         self.issue_prediction.main()
     
-    def issue_reasdon_predicted_data(self):
+    def issue_reason_predicted_data(self):
         self.issue_reason.reason_prediction(max_workers=10)
     
     def main(self):
@@ -46,7 +46,7 @@ class SentimentPredictionML(object):
         self.clean_and_preprocess_data()
         self.model_predicted_data()
         self.issue_predicted_data()
-        self.issue_reasdon_predicted_data()
+        self.issue_reason_predicted_data()
     
 
 if __name__ == "__main__":
