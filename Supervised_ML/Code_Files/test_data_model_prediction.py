@@ -89,7 +89,7 @@ class ModelPrediction(object):
     print(self.df['Sentiment'].value_counts())
     print(self.df['Prediction'].value_counts())
 
-  def actual_vs_prediction(self):
+  def actual_vs_prediction(self, stream_lit=False):
     names_sent = self.df['Sentiment'].value_counts().keys()
     values_sent = self.df['Sentiment'].value_counts().values
 
@@ -121,18 +121,19 @@ class ModelPrediction(object):
         yaxis_title='Values',
         barmode='group'
     )
-
-    # fig.show()
-    fig.write_image(self.saved_bar_chart_img_path + "actual_vs_predicted.png", engine='kaleido', scale=1)
-
-  def main(self, model_type="svc"):
+    if stream_lit:
+      fig.write_image(self.saved_bar_chart_img_path + "actual_vs_predicted.png", engine='kaleido', scale=1)
+    else:
+      fig.show()
+    
+  def main(self, model_type="svc", stream_lit=False):
     print("START: Initiating Model Prediction Pipeline")
     print("######################### STEP 1 #########################")
     print("Load model & Fetch Predictions")
     self.fetch_model_predictions(model_type=model_type)
     print("######################### STEP 2 #########################")
     print("Actual vs Prediction Histogram Graph")
-    self.actual_vs_prediction()
+    self.actual_vs_prediction(stream_lit=stream_lit)
     print("######################### STEP 3 #########################")
     print("Save Predictions")
     # Replace values / labels in the 'Prediction' column with actual Sentiments labels
@@ -146,4 +147,4 @@ class ModelPrediction(object):
 
 if __name__ == "__main__":
   obj = ModelPrediction()
-  obj.main(model_type="svc")
+  obj.main(model_type="svc", stream_lit=False)

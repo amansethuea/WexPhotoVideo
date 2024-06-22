@@ -29,14 +29,14 @@ class StreamLitApp(object):
 
             # Sentiments prediction distribution charts
             st.subheader("Actual vs Predicted Summary")
-            self.sentiment_prediction.model_predicted_data()
+            self.sentiment_prediction.model_predicted_data(stream_lit=True)
             
             image = open(self.path + "actual_vs_predicted.png", "rb").read()
             st.image(image, caption='True vs Predicted Labels', use_column_width=True)
 
             # Reviews and Issues distribution charts
             st.subheader("Trustpilot vs Power reviews Pie Chart")
-            self.sentiment_prediction.issue_predicted_data()
+            self.sentiment_prediction.issue_predicted_data(stream_lit=True)
 
             image = open(self.path + "pie_chart.png", "rb").read()
             st.image(image, caption='Reviews Distribution', use_column_width=True)

@@ -31,24 +31,24 @@ class SentimentPredictionML(object):
     def clean_and_preprocess_data(self):
         self.clean_and_preprocess.main(model_type="ML")
     
-    def model_predicted_data(self):
-        self.model_prediction.main(model_type="svc")
+    def model_predicted_data(self, stream_lit=False):
+        self.model_prediction.main(model_type="svc", stream_lit=stream_lit)
     
-    def issue_predicted_data(self):
-        self.issue_prediction.main()
+    def issue_predicted_data(self, stream_lit=False):
+        self.issue_prediction.main(stream_lit=stream_lit)
     
     def issue_reason_predicted_data(self):
         self.issue_reason.reason_prediction(max_workers=10)
     
-    def main(self):
+    def main(self, stream_lit=False):
         self.reviews_extraction_mechanism()
         self.club_reviews()
         self.clean_and_preprocess_data()
-        self.model_predicted_data()
-        self.issue_predicted_data()
+        self.model_predicted_data(stream_lit=stream_lit)
+        self.issue_predicted_data(stream_lit=stream_lit)
         self.issue_reason_predicted_data()
     
 
 if __name__ == "__main__":
     obj = SentimentPredictionML()
-    obj.main()
+    obj.main(stream_lit=False)
