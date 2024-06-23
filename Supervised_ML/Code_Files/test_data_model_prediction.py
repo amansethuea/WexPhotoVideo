@@ -67,7 +67,7 @@ class ModelPrediction(object):
     print(self.df['Sentiment'].value_counts())
     print(self.df['Prediction'].value_counts())
 
-  def actual_vs_prediction(self, stream_lit=False):
+  def actual_vs_prediction(self, stream_lit=False, dash=False):
     names_sent = self.df['Sentiment'].value_counts().keys()
     values_sent = self.df['Sentiment'].value_counts().values
 
@@ -101,17 +101,19 @@ class ModelPrediction(object):
     )
     if stream_lit:
       fig.write_image(self.saved_bar_chart_img_path + "actual_vs_predicted.png", engine='kaleido', scale=1)
+    elif dash:
+      return fig
     else:
       fig.show()
     
-  def main(self, model_type="svc", stream_lit=False):
+  def main(self, model_type="svc", stream_lit=False, dash=False):
     print("START: Initiating Model Prediction Pipeline")
     print("######################### STEP 1 #########################")
     print("Load model & Fetch Predictions")
     self.fetch_model_predictions(model_type=model_type)
     print("######################### STEP 2 #########################")
     print("Actual vs Prediction Histogram Graph")
-    self.actual_vs_prediction(stream_lit=stream_lit)
+    fig = self.actual_vs_prediction(stream_lit=stream_lit, dash=dash)
     print("######################### STEP 3 #########################")
     print("Save Predictions")
     # Replace values / labels in the 'Prediction' column with actual Sentiments labels
@@ -120,9 +122,11 @@ class ModelPrediction(object):
     print("Predictions saved. Please check final_ml_predictions_approach3.csv")
     print("END: Data prediction complete.")
     print()
+    if dash:
+      return fig
 
 
 
 if __name__ == "__main__":
   obj = ModelPrediction()
-  obj.main(model_type="svc", stream_lit=False)
+  obj.main(model_type="svc", stream_lit=False, dash=False)
