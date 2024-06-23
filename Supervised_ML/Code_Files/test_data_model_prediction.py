@@ -113,7 +113,10 @@ class ModelPrediction(object):
     self.fetch_model_predictions(model_type=model_type)
     print("######################### STEP 2 #########################")
     print("Actual vs Prediction Histogram Graph")
-    fig = self.actual_vs_prediction(stream_lit=stream_lit, dash=dash)
+    if dash:
+      fig = self.actual_vs_prediction(stream_lit=stream_lit, dash=dash)
+    else:
+      fig = self.actual_vs_prediction(stream_lit=stream_lit, dash=dash)
     print("######################### STEP 3 #########################")
     print("Save Predictions")
     # Replace values / labels in the 'Prediction' column with actual Sentiments labels

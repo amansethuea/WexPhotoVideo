@@ -73,7 +73,7 @@ class IssueTypePrediction(object):
             issues.add(label)
         return issues if issues else {"General"}
 
-    def reviews_sentiment_distribution(self, stream_lit=False):
+    def reviews_sentiment_distribution(self, stream_lit=False, dash=False):
       df = pd.read_csv(self.issue_predicted_data)
 
       filtered_df = df[df['Source'].isin(['Trustpilot', 'PowerReviews'])]
@@ -83,7 +83,7 @@ class IssueTypePrediction(object):
       for i, source in enumerate(['Trustpilot', 'PowerReviews']):
           source_data = filtered_df[filtered_df['Source'] == source]['Prediction'].value_counts().reset_index()
           source_data.columns = ['Prediction', 'Count']
-
+        
           fig.add_trace(
               go.Pie(
                   labels=source_data['Prediction'],
@@ -97,6 +97,9 @@ class IssueTypePrediction(object):
       
       if stream_lit:
           fig.write_image(self.saved_pie_chart_img_path + "pie_chart.png", engine='kaleido', scale=1)
+      elif dash:
+          fig.update_layout(title_text='Distribution of Reviews for Trustpilot and PowerReviews')
+          return fig
       else:     
         fig.update_layout(title_text='Distribution of Reviews for Trustpilot and PowerReviews')
         fig.show()
@@ -134,9 +137,9 @@ class IssueTypePrediction(object):
         
         return source_dict_modified
     
-    def issue_distribution_histogram(self, stream_lit=False):
+    def issue_distribution_histogram(self, stream_lit=False, dash=False):
     
-        figures = []
+        figures, dash_fig_list = [], []
         source_dict_modified = self.get_issue_distribution_per_category()
         
         # Define a list of colors to use for the bars
@@ -169,26 +172,31 @@ class IssueTypePrediction(object):
             if stream_lit:
                 fig.write_image(self.saved_pie_chart_img_path + f"issue_distribution_fig_{str(fig_counter)}.png", engine='kaleido', scale=1)
                 fig_counter += 1
+            elif dash:
+                dash_fig_list.append(fig)
             else:
                 fig.show()
+        if dash:
+            return dash_fig_list
 
-
-    def main(self, stream_lit=False):
+    def pre_requisite_before_visuals(self):
         print("START: Initiating predicting Issue Type")
         filtered_df = self.df[self.df['Prediction'].isin(['Positive', 'Negative', 'Neutral'])]
         filtered_df['Issues'] = filtered_df['Content'].apply(self.classify_issues)
         positive_df = self.df[self.df['Prediction'] == 'Positive']
         final_df = pd.concat([filtered_df, positive_df], ignore_index=True)
         final_df.to_csv(self.issue_predicted_data, index=False)
-        print(final_df.head())
         print("Issue Types predicted successfully. Please check ml_predictions_with_issue_types.csv")
+    
+    def main(self, stream_lit=False, dash=False):
+        self.pre_requisite_before_visuals()
         print("Reviews Distribution Pie Chart.")
-        self.reviews_sentiment_distribution(stream_lit=stream_lit)
+        self.reviews_sentiment_distribution(stream_lit=stream_lit, dash=dash)
         print("Issue Distribution Histogram.")
-        self.issue_distribution_histogram(stream_lit=stream_lit)
+        self.issue_distribution_histogram(stream_lit=stream_lit, dash=dash)
         print("END: Issues predicted complete.")
         print()
 
 if __name__ == "__main__":
     obj = IssueTypePrediction()
-    obj.main(stream_lit=False)
+    obj.main(stream_lit=False, dash=False)
