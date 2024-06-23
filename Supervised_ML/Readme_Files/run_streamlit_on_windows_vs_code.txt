@@ -1,0 +1,14 @@
+How to run Streamlit app via VSCode on Windows
+Create virtual env in VSCode terminal:-
+1. python -m venv venv
+2. venv\Scripts\activate
+3. pip install streamlit
+4. streamlit run streamlit_webapp.py
+5. Download all required packages in requirements.txt in Required_Modules folder using auto_download_modules.py in Code_Files folder.
+
+
+Note: If permissions are not given to create virtual env on windows terminal, open powershell or cmd in admin mode and run the following:-
+1. Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+2. Write Y or Yes and Press Enter
+
+Go back to VS code terminal and try running the virtual env steps again. 
