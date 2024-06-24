@@ -1,44 +1,119 @@
 import dash
-from dash import dcc
-from dash import html
-from dash.dependencies import Input, Output
+from dash import dcc, html
+from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
+import pandas as pd
 from test_data_model_prediction import ModelPrediction
 from test_data_issue_type_prediction import IssueTypePrediction
-import webbrowser
+from sentiment_prediction_ml import SentimentPredictionML
+import os
+import sys
 
-app = dash.Dash(__name__)
+class DashboardApp:
+    def __init__(self):
+        if sys.platform.startswith("win"):
+            self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
+            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+        elif sys.platform.startswith("darwin"):
+            self.path = os.path.join(os.getcwd(), "Model_Train_Data_Files")
+            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+        elif sys.platform.startswith("linux"):
+            self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
+            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+     
+        self.app = dash.Dash(__name__)
+        self.model_prediction = ModelPrediction()
+        self.issue_prediction = IssueTypePrediction()
+        self.sentiment_prediction = SentimentPredictionML()
+        self.setup_layout()
+        self.setup_callbacks()
 
-# Initialize the ModelPrediction and IssueTypePrediction classes
-model_prediction = ModelPrediction()
-issue_prediction = IssueTypePrediction()
+    def setup_layout(self):
+        self.app.layout = html.Div([
+            dcc.Store(id='graphs-ready', data=False),
+            html.Button('Generate Predictions', id='button', className='button', style={'backgroundColor': '#0074D9', 'color': 'white'}),
+            dcc.Loading(
+                id='loading',
+                type='default',
+                children=[
+                    dcc.Graph(id='graph_model'),
+                    dcc.Graph(id='graph_issue'),
+                    dcc.Graph(id='graph_issue2'),
+                    dcc.Graph(id='graph_issue3')
+                ],
+                fullscreen=True
+            ),
+            html.Button('Download CSV', id='download-button', className='button', style={'backgroundColor': '#FF4136', 'color': 'white', 'marginTop': '20px', 'display': 'none'}),
+            dcc.Download(id='download')
+        ])
 
-app.layout = html.Div([
-    html.Button('Generate Predictions', id='button', className='button', style={'backgroundColor': '#0074D9', 'color': 'white'}),
-    dcc.Graph(id='graph_model'),
-    dcc.Graph(id='graph_issue'),
-    dcc.Graph(id='graph_issue2'),
-    dcc.Graph(id='graph_issue3')
-])
+    def setup_callbacks(self):
+        @self.app.callback(
+            [Output('graph_model', 'figure'),
+             Output('graph_issue', 'figure'),
+             Output('graph_issue2', 'figure'),
+             Output('graph_issue3', 'figure'),
+             Output('graphs-ready', 'data')],
+            Input('button', 'n_clicks')
+        )
+        def update_graphs(n_clicks):
+            if n_clicks:
+                try:
+                    print("Generating model prediction...")
+                    # Pre-requisites before visual displays
+                    self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction
+                    self.sentiment_prediction.club_reviews() # Step 2: Club reviews
+                    self.sentiment_prediction.clean_and_preprocess_data() # Step 3: Clean and pre-process data
 
-@app.callback(
-    [Output('graph_model', 'figure'),
-     Output('graph_issue', 'figure'),
-     Output('graph_issue2', 'figure'),
-     Output('graph_issue3', 'figure')],
-    Input('button', 'n_clicks')
-)
-def update_graphs(n_clicks):
-    if n_clicks:
-        # Generate figures for both model and issue predictions
-        fig_model = model_prediction.main(dash=True)
-        issue_prediction.pre_requisite_before_visuals()
-        fig_sentiment_dist = issue_prediction.reviews_sentiment_distribution(dash=True)
-        fig_issue_dist_list = issue_prediction.issue_distribution_histogram(dash=True)
-        return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1]
-    return go.Figure(), go.Figure(), go.Figure(), go.Figure()
+                    fig_model = self.model_prediction.main(dash=True) # Step 4: Model prediction with visuals
+                    print("Model prediction generated.")
+
+                    print("Preparing issue prediction visuals...")
+                    # Pre-requisites before visual displays
+                    self.issue_prediction.pre_requisite_before_visuals() # Step 5: Issue prediction mechanism
+
+                    fig_sentiment_dist = self.issue_prediction.reviews_sentiment_distribution(dash=True)
+                    fig_issue_dist_list = self.issue_prediction.issue_distribution_histogram(dash=True)
+                    print("Issue prediction visuals prepared.")
+
+                    # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
+                    # self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
+
+                    return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True
+                except Exception as e:
+                    print(f"Error generating predictions: {e}")
+                    return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
+            return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
+
+        @self.app.callback(
+            Output('download-button', 'style'),
+            Input('graphs-ready', 'data')
+        )
+        def toggle_download_button(graphs_ready):
+            if graphs_ready:
+                return {'backgroundColor': '#FF4136', 'color': 'white', 'marginTop': '20px', 'display': 'block'}
+            else:
+                return {'display': 'none'}
+
+        @self.app.callback(
+            Output('download', 'data'),
+            Input('download-button', 'n_clicks'),
+            prevent_initial_call=True
+        )
+        def download_csv(n_clicks):
+            try:
+                if os.path.exists(self.issues_file):
+                    return dcc.send_file(self.issues_file)
+                else:
+                    print("File not found.")
+                    return dcc.send_string('File not found', filename='error.txt')
+            except Exception as e:
+                print(f"Error preparing download: {e}")
+                return dcc.send_string('Error preparing download', filename='error.txt')
+
+    def run(self):
+        self.app.run_server(debug=True)
 
 if __name__ == '__main__':
-    # Automatically open the default web browser
-    # webbrowser.open('http://127.0.0.1:8050/')
-    app.run_server(debug=True)
+    dashboard_app = DashboardApp()
+    dashboard_app.run()
