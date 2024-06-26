@@ -13,14 +13,20 @@ class DashboardApp:
     def __init__(self):
         if sys.platform.startswith("win"):
             self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
+            self.input_time_file_path = os.path.join(os.getcwd(), "..", "Data_Files")
             self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+            self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
         elif sys.platform.startswith("darwin"):
             self.path = os.path.join(os.getcwd(), "Model_Train_Data_Files")
+            self.input_time_file_path = os.path.join(os.getcwd(), "Data_Files")
             self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+            self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
         elif sys.platform.startswith("linux"):
             self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
+            self.input_time_file_path = os.path.join(os.getcwd(), "..", "Data_Files")
             self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
-     
+            self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
+        
         self.app = dash.Dash(__name__)
         self.model_prediction = ModelPrediction()
         self.issue_prediction = IssueTypePrediction()
@@ -64,6 +70,9 @@ class DashboardApp:
             if n_clicks:
                 try:
                     print(f"Time Range: {time_range}")
+                    fo = open(self.input_time_file, "w")
+                    fo.write(str(time_range))
+                    fo.close()
                     print("Generating model prediction...")
                     # Pre-requisites before visual displays
                     self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction
