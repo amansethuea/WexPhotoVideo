@@ -4,14 +4,23 @@ import sys
 import csv
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 class TrustPilot(object):
     def __init__(self):
         self.api_key = "OSGJRidu1dtDuDBaiq16IU63Rqn4ZSX1"
         # Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month
         #date_range = "12 months"
-        self.date_range = "2024-06-25"
+
+        if sys.platform.startswith("win"):
+            self.path = os.getcwd() + "/../Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
+        elif sys.platform.startswith("darwin"):
+            self.path = os.getcwd() + "//Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
+        elif sys.platform.startswith("linux"):
+            self.path = os.getcwd() + "/../Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
         
     # Fetching business unit ID
     def get_business_id(self):
@@ -26,58 +35,67 @@ class TrustPilot(object):
             print(f"ERROR: Status {status}. Please check.")
             return False
     
+    def read_time(self):
+        fo = open(self.time_file, "r")
+        data = fo.readlines()
+        for line in data:
+            input_time = line.strip()
+        fo.close()
+        return input_time
+    
     def get_time_range(self):
-        if re.search(". *[a-zA-Z]. *", self.date_range):
-            get_date_range = self.date_range.upper()
+        date_range = self.read_time()
+        if re.search(". *[a-zA-Z]. *", date_range):
+            get_date_range = date_range.upper()
             if get_date_range in ["12 MONTHS", "LAST 12 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(365)
+                calculate_date = date.today() - timedelta(365)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["6 MONTHS", "LAST 6 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(180)
+                calculate_date = date.today() - timedelta(180)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["3 MONTHS", "LAST 3 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(90)
+                calculate_date = date.today() - timedelta(90)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["30 DAYS", "LAST 30 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(60)
+                calculate_date = date.today() - timedelta(60)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["7 DAYS", "LAST 7 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(7)
+                calculate_date = date.today() - timedelta(7)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["2 DAYS", "LAST 2 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(2)
+                calculate_date = date.today() - timedelta(2)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
-            elif get_date_range in ["1 DAY", "ONE DAY", "LAST DAY", "YESTERDAY"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(1)
+            elif get_date_range in ["1 DAY", "1 DAYS", "ONE DAY", "ONE DAYS", "LAST DAY", "YESTERDAY"]:
+                calculate_date = date.today() - timedelta(1)
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["TODAY"]:
-                calculate_date = datetime.date.today()
+                calculate_date = date.today()
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
             elif get_date_range in ["THIS MONTH"]:
-                input_dt = datetime.date.today()
+                input_dt = date.today()
                 res = input_dt.replace(day=1)
                 find_days_diff = input_dt - res
                 find_days_diff = str(find_days_diff)
                 get_day_no_str = find_days_diff.split(",")[0]
                 get_day_no = get_day_no_str.split(" ")[0]
 
-                calculate_date = datetime.date.today() - datetime.timedelta(int(get_day_no))
+                calculate_date = date.today() - timedelta(int(get_day_no))
                 year, month, day = calculate_date.year, calculate_date.month, calculate_date.day
                 start_date = str(year)+"-"+str(month)+"-"+str(day)+"T00:00:00"
                 return start_date
@@ -85,7 +103,7 @@ class TrustPilot(object):
                 print("Invalid date. Please choose from the date range selection only")
                 return False
         else:
-            return self.date_range+"T:00:00:00"
+            return date_range+"T:00:00:00"
 
     # Create a list of URLs as per page_no_range global variable defined above
     def get_info(self, stars="all"):
@@ -93,8 +111,10 @@ class TrustPilot(object):
         business_unit_id = self.get_business_id()
         start_date = self.get_time_range()
         start_date = start_date.replace("T:", "T")
-        start_date_parsed = datetime.fromisoformat(start_date)
-        
+        try: 
+            start_date_parsed = datetime.strptime(start_date, "%d/%m/%YT%H:%M:%S")
+        except ValueError:
+            start_date_parsed = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
         page_no = 1
         while True:
             if stars == "all":
