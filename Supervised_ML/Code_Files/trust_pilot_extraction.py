@@ -11,7 +11,7 @@ class TrustPilot(object):
         self.api_key = "OSGJRidu1dtDuDBaiq16IU63Rqn4ZSX1"
         # Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month
         #date_range = "12 months"
-        self.date_range = "2024-06-21"
+        self.date_range = "2024-06-25"
 
         if sys.platform.startswith("win"):
             self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
@@ -95,53 +95,83 @@ class TrustPilot(object):
             return self.date_range+"T:00:00:00"
 
     # Create a list of URLs as per page_no_range global variable defined above
-    def create_url(self, stars="all", page_no_range=100):
-        review_url_list = []
+    def get_info(self, stars="all"):
+        final_info_dict_list = []
         business_unit_id = self.get_business_id()
         start_date = self.get_time_range()
-
-        for i in range(1, page_no_range + 1):
+        start_date = start_date.replace("T:", "T")
+        start_date_parsed = datetime.fromisoformat(start_date)
+        
+        page_no = 1
+        while True:
             if stars == "all":
-                reviews_url = f"https://api.trustpilot.com/v1/business-units/{business_unit_id}/reviews?apikey={self.api_key}&page={i}&language=en&startDateTime={start_date}"
+                reviews_url = f"https://api.trustpilot.com/v1/business-units/{business_unit_id}/reviews?apikey={self.api_key}&page={page_no}&language=en&startDateTime={start_date}"
+                review_data = requests.get(reviews_url)
+                status, res = review_data.status_code, review_data.content
+                counter = 1
+                if status == 200:
+                    parsed_dict = json.loads(res)
+                    for page_dict in parsed_dict['reviews']:
+                        review_date = page_dict['createdAt']
+                        review_date_parsed = datetime.fromisoformat(review_date.replace("Z", "+00:00"))
+                        # Check if review_date is of a previous date than start_date
+                        is_previous_date = review_date_parsed.date() < start_date_parsed.date()
+                        counter += 1
+                        if is_previous_date:
+                            return final_info_dict_list
+                        final_info_dict_list.append({'review_title': page_dict['title'],
+                                                     'review_content': page_dict['text'],
+                                                     'review_experience_date': page_dict['experiencedAt'],
+                                                     'review_created_date': page_dict['createdAt'],
+                                                     'review_stars': page_dict['stars'],
+                                                     'reviewer_name': page_dict['consumer']['displayName'],
+                                                     'review_location': page_dict['consumer']['displayLocation'],'reviews_given': page_dict['consumer']['numberOfReviews']
+                                                    })
+                        if counter == 20:
+                            break
+                    page_no += 1
+                else:
+                    print(f"ERROR: Status {status}. Unable to fetch data for page: {page_no}.")
+                    return False
+                
             else:
                 reviews_url = f"https://api.trustpilot.com/v1/business-units/{business_unit_id}/reviews?apikey={self.api_key}&stars={stars}&page={i}&language=en&startDateTime={start_date}"
-            review_url_list.append(reviews_url)
-        
-        return review_url_list
-
-    # Get all reviews data
-    def get_info(self, stars="all", page_no_range=100):
-        final_info_dict_list = []
-        get_url_list = self.create_url(stars, page_no_range)
-        for i in (get_url_list):
-            review_data = requests.get(i)
-            status, res = review_data.status_code, review_data.content
-            if status == 200:
-                parsed_dict = json.loads(res)
-                for page_dict in parsed_dict['reviews']:
-                    final_info_dict_list.append({'review_title': page_dict['title'],
-                                                'review_content': page_dict['text'],
-                                                'review_experience_date': page_dict['experiencedAt'],
-                                                'review_created_date': page_dict['createdAt'],
-                                                'review_stars': page_dict['stars'],
-                                                'reviewer_name': page_dict['consumer']['displayName'],
-                                                'review_location': page_dict['consumer']['displayLocation'],
-                                                'reviews_given': page_dict['consumer']['numberOfReviews']
-                                                })
-            else:
-                print(f"ERROR: Status {status}. Unable to fetch data for page: {i+1}.")
-                return False
-
-        return final_info_dict_list
+                review_data = requests.get(reviews_url)
+                status, res = review_data.status_code, review_data.content
+                counter = 1
+                if status == 200:
+                    parsed_dict = json.loads(res)
+                    for page_dict in parsed_dict['reviews']:
+                        review_date = page_dict['createdAt']
+                        review_date_parsed = datetime.fromisoformat(review_date.replace("Z", "+00:00"))
+                        # Check if review_date is of a previous date than start_date
+                        is_previous_date = review_date_parsed.date() < start_date_parsed.date()
+                        counter += 1  
+                        if is_previous_date:
+                            return final_info_dict_list
+                        final_info_dict_list.append({'review_title': page_dict['title'],
+                                                     'review_content': page_dict['text'],
+                                                     'review_experience_date': page_dict['experiencedAt'],
+                                                     'review_created_date': page_dict['createdAt'],
+                                                     'review_stars': page_dict['stars'],
+                                                     'reviewer_name': page_dict['consumer']['displayName'],
+                                                     'review_location': page_dict['consumer']['displayLocation'],'reviews_given': page_dict['consumer']['numberOfReviews']
+                                                    })
+                        if counter == 20:
+                            break
+                    page_no += 1
+                else:
+                    print(f"ERROR: Status {status}. Unable to fetch data for page: {page_no}.")
+                    return False
 
     def clear_csv(self):
         fo = open(self.trust_pilot_data_path, "w")
         fo.writelines("")
         fo.close()
     
-    def write_csv_data(self, stars="all", page_no_range=100):
+    def write_csv_data(self, stars="all"):
         # Get the page dict data
-        page_data_dict_list = self.get_info(stars, page_no_range)
+        page_data_dict_list = self.get_info(stars)
         file_name = self.trust_pilot_data_path
         for page_data in page_data_dict_list:
             try:
