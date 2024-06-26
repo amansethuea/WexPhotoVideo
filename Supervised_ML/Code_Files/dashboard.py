@@ -71,7 +71,7 @@ class DashboardApp:
                 try:
                     print(f"Time Range: {time_range}")
                     fo = open(self.input_time_file, "w")
-                    fo.write(str(time_range))
+                    fo.write(str(time_range).strip())
                     fo.close()
                     print("Generating model prediction...")
                     # Pre-requisites before visual displays
