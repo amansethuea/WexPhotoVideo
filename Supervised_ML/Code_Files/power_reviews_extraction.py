@@ -15,62 +15,59 @@ class PowerReviews(object):
         self.api_key = "480b2c96-26e8-4675-abe4-603abd90edd1"
         # Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month
         #date_range = "12 months"
-        self.date_range = "25/06/2024"
+        
+        if sys.platform.startswith("win"):
+            self.path = os.getcwd() + "/../Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
+        elif sys.platform.startswith("darwin"):
+            self.path = os.getcwd() + "//Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
+        elif sys.platform.startswith("linux"):
+            self.path = os.getcwd() + "/../Data_Files/"
+            self.time_file = self.path + 'input_time.csv'
+    
+    def read_time(self):
+        fo = open(self.time_file, "r")
+        data = fo.readlines()
+        for line in data:
+            input_time = line.strip()
+        fo.close()
+        return input_time
     
     def get_time_range(self):
-        if re.search(". *[a-zA-Z]. *", self.date_range):
-            get_date_range = self.date_range.upper()
-            if get_date_range in ["12 MONTHS", "LAST 12 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(365)
-                unix_time= calculate_date.strftime("%s")
-                # return str(int(unix_time) * 1000)
-                return unix_time
-            elif get_date_range in ["6 MONTHS", "LAST 6 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(180)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["3 MONTHS", "LAST 3 MONTHS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(90)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["30 DAYS", "LAST 30 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(60)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["7 DAYS", "LAST 7 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(7)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["2 DAYS", "LAST 2 DAYS"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(2)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["1 DAY", "ONE DAY", "LAST DAY"]:
-                calculate_date = datetime.date.today() - datetime.timedelta(1)
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["TODAY"]:
-                calculate_date = datetime.date.today()
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
-            elif get_date_range in ["THIS MONTH"]:
-                input_dt = datetime.date.today()
-                res = input_dt.replace(day=1)
-                find_days_diff = input_dt - res
-                find_days_diff = str(find_days_diff)
-                get_day_no_str = find_days_diff.split(",")[0]
-                get_day_no = get_day_no_str.split(" ")[0]
+        date_range = self.read_time()
 
-                calculate_date = datetime.date.today() - datetime.timedelta(int(get_day_no))
-                unix_time= calculate_date.strftime("%s")
-                return unix_time
+        if re.search(r".*[a-zA-Z].*", date_range):
+            get_date_range = date_range.upper()
+            if get_date_range in ["12 MONTHS", "LAST 12 MONTHS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=365)
+            elif get_date_range in ["6 MONTHS", "LAST 6 MONTHS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=180)
+            elif get_date_range in ["3 MONTHS", "LAST 3 MONTHS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=90)
+            elif get_date_range in ["30 DAYS", "LAST 30 DAYS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=30)
+            elif get_date_range in ["7 DAYS", "LAST 7 DAYS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=7)
+            elif get_date_range in ["2 DAYS", "LAST 2 DAYS"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=2)
+            elif get_date_range in ["1 DAY", "1 DAYS", "ONE DAY", "ONE DAYS", "LAST DAY", "YESTERDAY"]:
+                calculate_date = datetime.datetime.today() - datetime.timedelta(days=1)
+            elif get_date_range == "TODAY":
+                calculate_date = datetime.datetime.today()
+            elif get_date_range == "THIS MONTH":
+                input_dt = datetime.datetime.today()
+                first_day_of_month = input_dt.replace(day=1)
+                calculate_date = first_day_of_month
             else:
                 print("Invalid date. Please choose from the date range selection only")
                 return False
+            
+            unix_time = int(calculate_date.timestamp())
+            return str(unix_time)
         else:
-            unix_time = time.mktime(datetime.datetime.strptime(self.date_range, "%d/%m/%Y").timetuple())
-            # return str(int(unix_time) * 1000)
-            return str(int(unix_time))
+            unix_time = int(time.mktime(datetime.datetime.strptime(date_range, "%d/%m/%Y").timetuple()))
+            return str(unix_time)
 
     def url_formation(self):
         get_time = self.get_time_range()
