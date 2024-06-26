@@ -1,6 +1,5 @@
 import dash
-from dash import dcc, html
-from dash.dependencies import Input, Output, State
+from dash import dcc, html, Input, Output, State
 import plotly.graph_objs as go
 import pandas as pd
 from test_data_model_prediction import ModelPrediction
@@ -8,6 +7,7 @@ from test_data_issue_type_prediction import IssueTypePrediction
 from sentiment_prediction_ml import SentimentPredictionML
 import os
 import sys
+import time
 
 class DashboardApp:
     def __init__(self):
@@ -31,6 +31,8 @@ class DashboardApp:
         self.model_prediction = ModelPrediction()
         self.issue_prediction = IssueTypePrediction()
         self.sentiment_prediction = SentimentPredictionML()
+        self.start_time = None
+        self.total_time = 0
         self.setup_layout()
         self.setup_callbacks()
 
@@ -41,6 +43,7 @@ class DashboardApp:
             dcc.Input(id='time-range', type='text', placeholder='e.g. 25/06/2024 or today'),
             html.Div('Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month OR can be custom date: 25/06/2024', style={'marginTop': '10px', 'color': '#0074D9'}),
             html.Button('Generate Predictions', id='button', className='button', style={'backgroundColor': '#0074D9', 'color': 'white', 'marginTop': '10px'}),
+            html.Div(id='time-display', children='Time Lapsed: ', style={'marginTop': '10px', 'color': '#0074D9'}),
             dcc.Loading(
                 id='loading',
                 type='default',
@@ -69,6 +72,7 @@ class DashboardApp:
         def update_graphs(n_clicks, time_range):
             if n_clicks:
                 try:
+                    self.start_time = time.time()  # Start timing when button is clicked
                     print(f"Time Range: {time_range}")
                     fo = open(self.input_time_file, "w")
                     fo.write(str(time_range).strip())
@@ -93,11 +97,27 @@ class DashboardApp:
                     # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
                     self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
 
+                    self.total_time = time.time() - self.start_time  # Calculate total time elapsed
                     return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True
                 except Exception as e:
                     print(f"Error generating predictions: {e}")
                     return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
             return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
+
+        @self.app.callback(
+            Output('time-display', 'children'),
+            Input('graphs-ready', 'data'),
+            prevent_initial_call=True
+        )
+        def update_time_display(graphs_ready):
+            if graphs_ready:
+                return f'Total Lapsed Time: {self.format_time(self.total_time)}'
+            else:
+                if self.start_time:
+                    elapsed_time = int(time.time() - self.start_time)
+                    return f'Time Lapsed: {self.format_time(elapsed_time)}'
+                else:
+                    return 'Time Lapsed: 0 seconds'  # Initial state
 
         @self.app.callback(
             Output('download-button', 'style'),
@@ -127,6 +147,11 @@ class DashboardApp:
 
     def run(self):
         self.app.run_server(debug=True)
+
+    def format_time(self, seconds):
+        minutes = seconds // 60
+        seconds = seconds % 60
+        return f'{int(minutes)} min {seconds:.2f} seconds' if minutes > 0 else f'{seconds:.2f} seconds'
 
 if __name__ == '__main__':
     dashboard_app = DashboardApp()
