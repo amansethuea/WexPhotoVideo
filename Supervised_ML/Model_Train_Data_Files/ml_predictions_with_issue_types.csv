@@ -21,10 +21,10 @@ Created Date,Rating,Source,Sentiment,Content,Prediction,Issues
 2024-06-25T18:39:17Z,5,Trustpilot,2,excellent product excellent customer services,Positive,{'No Issue'}
 2024-06-25T17:54:34Z,5,Trustpilot,2,"bought a software licence from them. i did not expect to find it on wex, but it was at a discount to current list price and everything was fine, . reassuringly they had promptly replied to my query prior to purchase",Positive,{'No Issue'}
 2024-06-25T16:40:29Z,5,Trustpilot,2,"great service, would highly recommend",Positive,{'No Issue'}
-2024-06-25T16:06:47Z,5,Trustpilot,2,"just a quick rating, as the emailed questionaire is suffering problems. to reiterate previous comments, once again, more than overjoyed with wex. brilliant, quick. good prices and no fuss. online pros!",Positive,"{'General', 'No Issue'}"
+2024-06-25T16:06:47Z,5,Trustpilot,2,"just a quick rating, as the emailed questionaire is suffering problems. to reiterate previous comments, once again, more than overjoyed with wex. brilliant, quick. good prices and no fuss. online pros!",Positive,"{'No Issue', 'General'}"
 2024-06-25T15:43:33Z,5,Trustpilot,2,quick dispatch and the item was well packaged. wex is an excellent website for high quality second hand items.,Positive,{'No Issue'}
 2024-06-25T13:46:14Z,5,Trustpilot,2,bag arrived the very next day as promised. another great experience shopping at wex. telesales team: thank you!,Positive,{'No Issue'}
-2024-06-25T12:48:18Z,5,Trustpilot,2,always helpful - problems are dealt with pronto. i will continue to buy for them.,Positive,"{'General', 'No Issue'}"
+2024-06-25T12:48:18Z,5,Trustpilot,2,always helpful - problems are dealt with pronto. i will continue to buy for them.,Positive,"{'No Issue', 'General'}"
 2024-06-25T12:24:44Z,5,Trustpilot,2,good selection and prompt delivery,Positive,{'No Issue'}
 2024-06-25T12:20:24Z,5,Trustpilot,2,swift service. accurate on line information and good prices.,Positive,{'No Issue'}
 2024-06-25T11:56:33Z,5,Trustpilot,2,i purchased my item and delivery was so fast. unfortunately the item was not compatible with my phone & therefore had to be returned. the return process was so easy and also processed so quickly. i would definitely use this company again without hesitation. 10/10 for customer service.,Positive,{'Customer service'}
@@ -32,7 +32,7 @@ Created Date,Rating,Source,Sentiment,Content,Prediction,Issues
 2024-06-25T11:23:44Z,5,Trustpilot,2,great customer service and fast delivery.,Positive,{'Customer service'}
 2024-06-25T11:07:06Z,5,Trustpilot,2,have used wex for years and they have always provided sterling service and great products,Positive,{'No Issue'}
 2024-06-25T10:31:06Z,5,Trustpilot,2,very quick delivery,Positive,{'No Issue'}
-2024-06-25T10:18:03Z,5,Trustpilot,2,ordered a lens late afternoon delivered the following morning. great service,Positive,"{'Delivery', 'Electronics', 'Time'}"
+2024-06-25T10:18:03Z,5,Trustpilot,2,ordered a lens late afternoon delivered the following morning. great service,Positive,"{'Electronics', 'Time', 'Delivery'}"
 2024-06-25T10:14:38Z,5,Trustpilot,2,"the correct item, properly packaged, delivered on time, at a good price. what is not to like ?",Positive,{'Delivery'}
 2024-06-25T10:11:01Z,5,Trustpilot,2,"order received quickly and exactly as described. great service, would definitely use again",Positive,{'No Issue'}
 2024-06-25T10:09:30Z,5,Trustpilot,2,"great price, speedy delivery",Positive,{'No Issue'}
@@ -43,7 +43,7 @@ Created Date,Rating,Source,Sentiment,Content,Prediction,Issues
 2024-06-25T07:09:23Z,5,Trustpilot,2,"i sold a camera lens online to wex after receiving quotes from a few camera stores. they offered £305 based on my own rating of the camera condition, and this was subject to their checks of the lens. i was pleasantly surprised to be paid £315 instead, presumably as the lens was in better condition than i had ranked it. clearly a very honest, trustworthy company that is not in it just for the cash.",Positive,{'Electronics'}
 Thu Jun 20 20:36:04 2024,5,PowerReviews,2,have used them before and will do again.,Negative,{'No Issue'}
 Thu Jun 20 18:06:27 2024,5,PowerReviews,2,the easiest way to spend money that i have found but great products. great service. great fun!,Positive,{'Payment'}
-Thu Jun 20 17:34:12 2024,5,PowerReviews,2,no problem with order,Positive,"{'General', 'No Issue'}"
+Thu Jun 20 17:34:12 2024,5,PowerReviews,2,no problem with order,Positive,"{'No Issue', 'General'}"
 Thu Jun 20 17:31:16 2024,1,PowerReviews,0,"checkout not working, log in broken, links back to paypal stopped. used 3 broswers",Negative,{'Product'}
 Thu Jun 20 16:59:24 2024,5,PowerReviews,2,seamless,Positive,{'No Issue'}
 Thu Jun 20 16:51:07 2024,5,PowerReviews,2,thank you!,Positive,{'No Issue'}
@@ -83,6 +83,6 @@ Tue Jun 18 15:58:33 2024,5,PowerReviews,2,"super easy, great prices",Positive,{'
 Tue Jun 18 15:29:33 2024,5,PowerReviews,2,first class.,Positive,{'No Issue'}
 Tue Jun 18 14:48:48 2024,5,PowerReviews,2,easy system to navigate,Positive,{'No Issue'}
 Tue Jun 18 14:01:58 2024,5,PowerReviews,2,easy shopping on your website,Positive,{'No Issue'}
-Tue Jun 18 13:29:57 2024,5,PowerReviews,2,easy to follow. no problem.,Positive,"{'General', 'No Issue'}"
+Tue Jun 18 13:29:57 2024,5,PowerReviews,2,easy to follow. no problem.,Positive,"{'No Issue', 'General'}"
 Tue Jun 18 13:08:24 2024,4,PowerReviews,2,good simple,Positive,{'No Issue'}
 Tue Jun 18 12:35:12 2024,2,PowerReviews,0,endless problems with paypal payment,Positive,{'Payment'}

@@ -91,7 +91,7 @@ class DashboardApp:
                     print("Issue prediction visuals prepared.")
 
                     # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
-                    # self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
+                    self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
 
                     return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True
                 except Exception as e:
