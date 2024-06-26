@@ -68,10 +68,22 @@ class IssueTypePrediction(object):
         doc = self.nlp(text)
         matches = self.matcher(doc)
         issues = set()
+
         for match_id, start, end in matches:
             label = self.nlp.vocab.strings[match_id]
-            issues.add(label)
-        return issues if issues else {"General"}
+            if label != "General":
+                issues.add(label)
+        
+        # If no other issues are found, check for 'General'
+        if not issues:
+            for phrase in self.issue_phrases["General"]:
+                if phrase in text:
+                    issues.add("General")
+                    break
+                else:
+                    issues.add("No Issue")
+        
+        return issues
 
     def reviews_sentiment_distribution(self, stream_lit=False, dash=False):
       df = pd.read_csv(self.issue_predicted_data)
@@ -183,9 +195,7 @@ class IssueTypePrediction(object):
         print("START: Initiating predicting Issue Type")
         filtered_df = self.df[self.df['Prediction'].isin(['Positive', 'Negative', 'Neutral'])]
         filtered_df['Issues'] = filtered_df['Content'].apply(self.classify_issues)
-        positive_df = self.df[self.df['Prediction'] == 'Positive']
-        final_df = pd.concat([filtered_df, positive_df], ignore_index=True)
-        final_df.to_csv(self.issue_predicted_data, index=False)
+        filtered_df.to_csv(self.issue_predicted_data, index=False)
         print("Issue Types predicted successfully. Please check ml_predictions_with_issue_types.csv")
     
     def main(self, stream_lit=False, dash=False):
