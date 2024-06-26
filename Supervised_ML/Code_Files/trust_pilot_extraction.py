@@ -135,7 +135,7 @@ class TrustPilot(object):
                     return False
                 
             else:
-                reviews_url = f"https://api.trustpilot.com/v1/business-units/{business_unit_id}/reviews?apikey={self.api_key}&stars={stars}&page={i}&language=en&startDateTime={start_date}"
+                reviews_url = f"https://api.trustpilot.com/v1/business-units/{business_unit_id}/reviews?apikey={self.api_key}&stars={stars}&page={page_no}&language=en&startDateTime={start_date}"
                 review_data = requests.get(reviews_url)
                 status, res = review_data.status_code, review_data.content
                 counter = 1
