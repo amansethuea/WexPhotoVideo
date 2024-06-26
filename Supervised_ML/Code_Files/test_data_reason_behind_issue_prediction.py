@@ -29,7 +29,7 @@ class ReasonBehindIssuePrediction(object):
             review = row['Content']
             response = ollama.chat(model='llama3', messages=[{
                 'role': 'user', 
-                'content': f"Could you tell me if there is any issue with this customer review: '{review}'. Keep the answer within 20 words. Try to inspect carefully and look for any electronics models specified."
+                'content': f"Could you tell me if there is any issue with this customer review: '{review}'. Keep the answer within 20 words."
             }])
             return index, response['message']['content']
         return index, ''
@@ -41,8 +41,8 @@ class ReasonBehindIssuePrediction(object):
         start_time_total = time.time()
         
         # Filter the DataFrame to exclude rows where Issues contains 'No Issue'
-        filtered_df = self.df[(pd.notna(self.df['Issues'])) & (self.df['Issues'] != '') & (~self.df['Issues'].str.contains('No Issue'))]
-        
+        # filtered_df = self.df[(pd.notna(self.df['Issues'])) & (self.df['Issues'] != '') & (~self.df['Issues'].str.contains('No Issue'))]
+        filtered_df = self.df[(pd.notna(self.df['Issues'])) & (self.df['Issues'] != '') & (self.df['Issues'] != "{'No Issue'}")]
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {executor.submit(self.fetch_reason, index, row): index for index, row in filtered_df.iterrows()}
             
