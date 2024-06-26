@@ -78,8 +78,8 @@ class PowerReviews(object):
         data_bytes = review_data.content
         my_json_dict = json.loads(data_bytes)
         # Fetch total no. of pages
-        # Disabling it for now since API doesn't work as expected and keeping value static to 50 below (approx 2 pages)
-        fetch_total_pages = 50 
+        # Disabling it for now since API doesn't work as expected and keeping value static to 25 below (approx 2 pages)
+        fetch_total_pages = 25 
         # fetch_total_pages = int(my_json_dict['paging']['pages_total'])
         # print(f"total pages: {fetch_total_pages}")
         total_urls = []
