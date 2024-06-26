@@ -15,14 +15,7 @@ class PowerReviews(object):
         self.api_key = "480b2c96-26e8-4675-abe4-603abd90edd1"
         # Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month
         #date_range = "12 months"
-        self.date_range = "21/06/2024"
-
-        if sys.platform.startswith("win"):
-            self.power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
-        elif sys.platform.startswith("darwin"):
-            self.power_reviews_data_path = os.getcwd() + "/Data_Files/power_reviews_all_api.csv"
-        elif sys.platform.startswith("linux"):
-            self.power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+        self.date_range = "25/06/2024"
     
     def get_time_range(self):
         if re.search(". *[a-zA-Z]. *", self.date_range):
@@ -103,12 +96,26 @@ class PowerReviews(object):
         return total_urls
     
     def clear_csv(self):
-        fo = open(self.power_reviews_data_path, "w")
+        if sys.platform.startswith("win"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("darwin"):
+            power_reviews_data_path = os.getcwd() + "/Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("linux"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+
+        fo = open(power_reviews_data_path, "w")
         fo.writelines("")
         fo.close()
 
     def write_csv_data(self, file_name, review_created_date, page_id, review_rating, review_headline, comment, review_location, reviewer_nickname):
-        file_name = self.power_reviews_data_path
+        if sys.platform.startswith("win"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("darwin"):
+            power_reviews_data_path = os.getcwd() + "/Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("linux"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+        
+        file_name = power_reviews_data_path
         try:
             with open(file_name, 'a', encoding = 'utf8', newline = '') as csvfile:
                 fieldnames = ['Created Date', 'Page ID', 'Review Rating',
@@ -128,7 +135,14 @@ class PowerReviews(object):
             print(f"Something unexpected happened. Please check the output.")
     
     def get_info(self):
-        file_name = self.power_reviews_data_path
+        if sys.platform.startswith("win"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("darwin"):
+            power_reviews_data_path = os.getcwd() + "/Data_Files/power_reviews_all_api.csv"
+        elif sys.platform.startswith("linux"):
+            power_reviews_data_path = os.getcwd() + "/../Data_Files/power_reviews_all_api.csv"
+
+        file_name = power_reviews_data_path
         # Clearing existing CSV everytime before running script
         self.clear_csv()
         get_urls = self.url_formation()

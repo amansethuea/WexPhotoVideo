@@ -12,13 +12,6 @@ class TrustPilot(object):
         # Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month
         #date_range = "12 months"
         self.date_range = "2024-06-25"
-
-        if sys.platform.startswith("win"):
-            self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
-        elif sys.platform.startswith("darwin"):
-            self.trust_pilot_data_path = os.getcwd() + "/Data_Files/trustpilot_all_reviews_api.csv"
-        elif sys.platform.startswith("linux"):
-            self.trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
         
     # Fetching business unit ID
     def get_business_id(self):
@@ -165,14 +158,29 @@ class TrustPilot(object):
                     return False
 
     def clear_csv(self):
-        fo = open(self.trust_pilot_data_path, "w")
+        if sys.platform.startswith("win"):
+            trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
+        elif sys.platform.startswith("darwin"):
+            trust_pilot_data_path = os.getcwd() + "/Data_Files/trustpilot_all_reviews_api.csv"
+        elif sys.platform.startswith("linux"):
+            trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
+
+        fo = open(trust_pilot_data_path, "w")
         fo.writelines("")
         fo.close()
     
     def write_csv_data(self, stars="all"):
         # Get the page dict data
         page_data_dict_list = self.get_info(stars)
-        file_name = self.trust_pilot_data_path
+
+        if sys.platform.startswith("win"):
+            trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
+        elif sys.platform.startswith("darwin"):
+            trust_pilot_data_path = os.getcwd() + "/Data_Files/trustpilot_all_reviews_api.csv"
+        elif sys.platform.startswith("linux"):
+            trust_pilot_data_path = os.getcwd() + "/../Data_Files/trustpilot_all_reviews_api.csv"
+
+        file_name = trust_pilot_data_path
         for page_data in page_data_dict_list:
             try:
                 with open(file_name, 'a', encoding = 'utf8', newline = '') as csvfile:

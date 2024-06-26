@@ -17,27 +17,26 @@ import sys
 class ModelPrediction(object):
   def __init__(self):
     if sys.platform.startswith("win"):
-        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
         self.saved_models_path = os.getcwd() + "/../Saved_Models/"
         self.saved_bar_chart_img_path = os.getcwd() + "/../Saved_Images/"
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
     elif sys.platform.startswith("darwin"):
-       self.path = os.getcwd() + "/Model_Train_Data_Files/"
-       self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
        self.saved_models_path = os.getcwd() + "/Saved_Models/"
        self.saved_bar_chart_img_path = os.getcwd() + "/Saved_Images/"
+       self.path = os.getcwd() + "/Model_Train_Data_Files/"
     elif sys.platform.startswith("linux"):
-        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for predictio 
         self.saved_models_path = os.getcwd() + "/../Saved_Models/"
         self.saved_bar_chart_img_path = os.getcwd() + "/../Saved_Images/"
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
     
     self.predicted_data = 'final_ml_predictions_approach3.csv'
     self.svc_model_name = "model_svc_test.sav"
     self.lr_model_name = "model_lr_test.sav"
     
-
-    self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') 
+    try:
+      self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv')
+    except FileNotFoundError:
+      print("cleaned_test_data_approach3.csv might not be created yet. Waiting for it to be created first.")
 
   def loading_saved_model(self, model_type="SVC"):
     # Load the model from the file
@@ -107,6 +106,13 @@ class ModelPrediction(object):
       fig.show()
     
   def main(self, model_type="svc", stream_lit=False, dash=False):
+    if sys.platform.startswith("win"):
+      self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
+    elif sys.platform.startswith("darwin"):
+      self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
+    elif sys.platform.startswith("linux"):
+      self.df = pd.read_csv(self.path + 'cleaned_test_data_approach3.csv') # Pre-processed test data to pass to saved ML models for prediction
+
     print("START: Initiating Model Prediction Pipeline")
     print("######################### STEP 1 #########################")
     print("Load model & Fetch Predictions")
@@ -121,6 +127,7 @@ class ModelPrediction(object):
     print("Save Predictions")
     # Replace values / labels in the 'Prediction' column with actual Sentiments labels
     self.df['Prediction'] = self.df['Prediction'].replace({0: 'Negative', 1: 'Neutral', 2: 'Positive'})
+    
     self.df.to_csv(self.path + self.predicted_data, index = False)
     print("Predictions saved. Please check final_ml_predictions_approach3.csv")
     print("END: Data prediction complete.")

@@ -24,16 +24,22 @@ class CleanAndPreprocess(object):
 
     if sys.platform.startswith("win"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
-        self.cleaned_preprocessed_data = os.getcwd() + "/../Model_Train_Data_Files/cleaned_test_data_approach3.csv"
+        try:
+          self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+        except FileNotFoundError:
+           print("fetched_test_reviews.csv might not be formed yet. Waiting for file to be formed first.")
     elif sys.platform.startswith("darwin"):
        self.path = os.getcwd() + "/Model_Train_Data_Files/"
-       self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
-       self.cleaned_preprocessed_data = os.getcwd() + "/Model_Train_Data/Files/cleaned_test_data_approach3.csv"
+       try:
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+       except FileNotFoundError:
+          print("fetched_test_reviews.csv might not be formed yet. Waiting for file to be formed first.")
     elif sys.platform.startswith("linux"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
-        self.cleaned_preprocessed_data = os.getcwd() + "/../Model_Train_Data_Files/cleaned_test_data_approach3.csv"
+        try:
+          self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+        except FileNotFoundError:
+           print("fetched_test_reviews.csv might not be formed yet. Waiting for file to be formed first.")
 
   def create_sentiment_labels(self, rating):
     rating = int(rating)
@@ -51,6 +57,16 @@ class CleanAndPreprocess(object):
     self.df['Sentiment'] = self.df['Rating'].apply(self.create_sentiment_labels)
 
   def check_mandatory_columns(self):
+    if sys.platform.startswith("win"):
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+    elif sys.platform.startswith("darwin"):
+      self.path = os.getcwd() + "/Model_Train_Data_Files/"
+      self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+    elif sys.platform.startswith("linux"):
+        self.path = os.getcwd() + "/../Model_Train_Data_Files/"
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
+
     columns_to_check = ['Rating', 'Content', 'Sentiment']
     # Check if the columns exist in the DataFrame
     existing_columns = [col for col in columns_to_check if col in self.df.columns]
@@ -118,7 +134,7 @@ class CleanAndPreprocess(object):
     else:
         demoji.findall(str(text))
         values_list  = []
-        for keys, values in demoji.findall(str(text)).items():
+        for _, values in demoji.findall(str(text)).items():
             values_list.append(values)
 
         if "star" in values_list:
@@ -218,7 +234,15 @@ class CleanAndPreprocess(object):
     print("Regex column dropped successfully")
 
   def save_preprocessed_test_data(self):
-    self.df.to_csv(self.cleaned_preprocessed_data, index=False)
+    if sys.platform.startswith("win"):
+       cleaned_preprocessed_data = os.getcwd() + "/../Model_Train_Data_Files/cleaned_test_data_approach3.csv"
+    elif sys.platform.startswith("darwin"):
+       cleaned_preprocessed_data = os.getcwd() + "/Model_Train_Data_Files/cleaned_test_data_approach3.csv"
+    elif sys.platform.startswith("linux"):
+       cleaned_preprocessed_data = os.getcwd() + "/../Model_Train_Data_Files/cleaned_test_data_approach3.csv"
+  
+
+    self.df.to_csv(cleaned_preprocessed_data, index=False)
     print("Test Data Pre-processed and saved successfully. Please check cleaned_test_data_approach3.csv")
 
   def main(self, model_type="ML"):
