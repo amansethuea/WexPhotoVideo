@@ -31,7 +31,10 @@ class DashboardApp:
     def setup_layout(self):
         self.app.layout = html.Div([
             dcc.Store(id='graphs-ready', data=False),
-            html.Button('Generate Predictions', id='button', className='button', style={'backgroundColor': '#0074D9', 'color': 'white'}),
+            html.Label('Enter Time Range:'),
+            dcc.Input(id='time-range', type='text', placeholder='e.g. 25/06/2024 or today'),
+            html.Div('Date range can be 12 months, 6 months, 3 months, 30 days, 7 days, 2 days, last day, yesterday, today, this month OR can be custom date: 25/06/2024', style={'marginTop': '10px', 'color': '#0074D9'}),
+            html.Button('Generate Predictions', id='button', className='button', style={'backgroundColor': '#0074D9', 'color': 'white', 'marginTop': '10px'}),
             dcc.Loading(
                 id='loading',
                 type='default',
@@ -54,11 +57,13 @@ class DashboardApp:
              Output('graph_issue2', 'figure'),
              Output('graph_issue3', 'figure'),
              Output('graphs-ready', 'data')],
-            Input('button', 'n_clicks')
+            [Input('button', 'n_clicks')],
+            [State('time-range', 'value')]
         )
-        def update_graphs(n_clicks):
+        def update_graphs(n_clicks, time_range):
             if n_clicks:
                 try:
+                    print(f"Time Range: {time_range}")
                     print("Generating model prediction...")
                     # Pre-requisites before visual displays
                     self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction
