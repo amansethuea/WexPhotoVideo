@@ -9,12 +9,12 @@ from test_data_reason_behind_issue_prediction import ReasonBehindIssuePrediction
 
 class SentimentPredictionML(object):
     def __init__(self):
-        #self.trust_pilot = TrustPilot()
-        #self.power_reviews = PowerReviews()
-        #self.club_review = ClubPlatformReviews()
-        #self.clean_and_preprocess = CleanAndPreprocess()
-        #self.model_prediction = ModelPrediction()
-        #self.issue_prediction = IssueTypePrediction()
+        self.trust_pilot = TrustPilot()
+        self.power_reviews = PowerReviews()
+        self.club_review = ClubPlatformReviews()
+        self.clean_and_preprocess = CleanAndPreprocess()
+        self.model_prediction = ModelPrediction()
+        self.issue_prediction = IssueTypePrediction()
         self.issue_reason = ReasonBehindIssuePrediction()
 
     def reviews_extraction_mechanism(self):
@@ -41,11 +41,11 @@ class SentimentPredictionML(object):
         self.issue_reason.reason_prediction(max_workers=10)
     
     def main(self, stream_lit=False):
-        #self.reviews_extraction_mechanism()
-        #self.club_reviews()
-        #self.clean_and_preprocess_data()
-        #self.model_predicted_data(stream_lit=stream_lit)
-        #self.issue_predicted_data(stream_lit=stream_lit)
+        self.reviews_extraction_mechanism()
+        self.club_reviews()
+        self.clean_and_preprocess_data()
+        self.model_predicted_data(stream_lit=stream_lit)
+        self.issue_predicted_data(stream_lit=stream_lit)
         self.issue_reason_predicted_data()
     
 
