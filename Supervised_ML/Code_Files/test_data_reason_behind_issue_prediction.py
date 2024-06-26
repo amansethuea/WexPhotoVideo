@@ -14,15 +14,15 @@ class ReasonBehindIssuePrediction(object):
     def __init__(self):
         if sys.platform.startswith("win"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types_test.csv') # Data with issues predictions
+            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types.csv') # Data with issues predictions
             self.save_with_reason = self.path + "ml_predictions_issues_with_reason.csv" # Data file with possible reasons behind predicted issues.
         elif sys.platform.startswith("darwin"):
             self.path = os.getcwd() + "/Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types_test.csv') # Data with issues predictions
+            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types.csv') # Data with issues predictions
             self.save_with_reason = self.path + "ml_predictions_issues_with_reason.csv" # Data file with possible reasons behind predicted issues.
         elif sys.platform.startswith("linux"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types_test.csv') # Data with issues predictions
+            self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types.csv') # Data with issues predictions
             self.save_with_reason = self.path + "ml_predictions_issues_with_reason.csv" # Data file with possible reasons behind predicted issues.
     
     def fetch_reason(self, index, row):
