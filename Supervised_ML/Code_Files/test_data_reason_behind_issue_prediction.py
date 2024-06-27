@@ -35,6 +35,8 @@ class ReasonBehindIssuePrediction(object):
         return index, ''
 
     def reason_prediction(self, max_workers=5):
+        # Fresh dataframe read
+        self.df = pd.read_csv(self.path + 'ml_predictions_with_issue_types.csv')  # Data with issues predictions
         self.df['Reason'] = ''
         print("START: Initiating reason behind issues prediction")
         review_counter = 1

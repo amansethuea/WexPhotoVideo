@@ -5,10 +5,12 @@ from test_data_cleaning_preprocessing import CleanAndPreprocess
 from test_data_model_prediction import ModelPrediction
 from test_data_issue_type_prediction import IssueTypePrediction
 from test_data_reason_behind_issue_prediction import ReasonBehindIssuePrediction
+from clear_data import ClearAllData
 
 
 class SentimentPredictionML(object):
     def __init__(self):
+        self.clear_all_data = ClearAllData()
         self.trust_pilot = TrustPilot()
         self.power_reviews = PowerReviews()
         self.club_review = ClubPlatformReviews()
@@ -17,6 +19,9 @@ class SentimentPredictionML(object):
         self.issue_prediction = IssueTypePrediction()
         self.issue_reason = ReasonBehindIssuePrediction()
 
+    def clear_data(self):
+        self.clear_all_data.clear_data()
+    
     def reviews_extraction_mechanism(self):
         # Trust Pilot
         self.trust_pilot.clear_csv()
@@ -41,6 +46,7 @@ class SentimentPredictionML(object):
         self.issue_reason.reason_prediction(max_workers=10)
     
     def main(self, stream_lit=False):
+        self.clear_data()
         self.reviews_extraction_mechanism()
         self.club_reviews()
         self.clean_and_preprocess_data()

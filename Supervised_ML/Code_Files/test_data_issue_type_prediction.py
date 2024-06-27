@@ -192,6 +192,8 @@ class IssueTypePrediction(object):
             return dash_fig_list
 
     def pre_requisite_before_visuals(self):
+        # Fresh df read
+        self.df = pd.read_csv(self.path + 'final_ml_predictions_approach3.csv')
         print("START: Initiating predicting Issue Type")
         filtered_df = self.df[self.df['Prediction'].isin(['Positive', 'Negative', 'Neutral'])]
         filtered_df['Issues'] = filtered_df['Content'].apply(self.classify_issues)
