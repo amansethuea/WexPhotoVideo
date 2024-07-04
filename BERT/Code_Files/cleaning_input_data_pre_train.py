@@ -6,9 +6,6 @@ import contractions
 import spacy
 import demoji
 
-# Visualization Libraries
-pd.options.display.max_rows = 10
-pd.plotting.register_matplotlib_converters()
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -76,6 +73,7 @@ class CleanAndPreprocess(object):
         print("Sentiment column not found. Creating sentiment labels")
         self.apply_sentiment_to_test_data()
         existing_columns = [col for col in columns_to_check if col in self.df.columns]
+        print("Sentiment labels created successfully")
         return existing_columns
       else:
         print(f"Following mandatory columns are missing from the DataFrame: {missing_columns}")
