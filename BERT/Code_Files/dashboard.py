@@ -2,9 +2,9 @@ import dash
 from dash import dcc, html, Input, Output, State
 import plotly.graph_objs as go
 import pandas as pd
-from test_data_model_prediction import ModelPrediction
+from test_data_model_prediction import ModelPredictions
 from test_data_issue_type_prediction import IssueTypePrediction
-from BERT.Code_Files.sentiment_prediction_bert import SentimentPredictionML
+from sentiment_prediction_bert import SentimentPredictionBERT
 import os
 import sys
 import time
@@ -14,23 +14,23 @@ class DashboardApp:
         if sys.platform.startswith("win"):
             self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
             self.input_time_file_path = os.path.join(os.getcwd(), "..", "Data_Files")
-            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+            self.issues_file = os.path.join(self.path, "bert_predictions_issues_with_reason.csv")
             self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
         elif sys.platform.startswith("darwin"):
             self.path = os.path.join(os.getcwd(), "Model_Train_Data_Files")
             self.input_time_file_path = os.path.join(os.getcwd(), "Data_Files")
-            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+            self.issues_file = os.path.join(self.path, "bert_predictions_issues_with_reason.csv")
             self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
         elif sys.platform.startswith("linux"):
             self.path = os.path.join(os.getcwd(), "..", "Model_Train_Data_Files")
             self.input_time_file_path = os.path.join(os.getcwd(), "..", "Data_Files")
-            self.issues_file = os.path.join(self.path, "ml_predictions_issues_with_reason.csv")
+            self.issues_file = os.path.join(self.path, "bert_predictions_issues_with_reason.csv")
             self.input_time_file = os.path.join(self.input_time_file_path, "input_time.csv")
         
         self.app = dash.Dash(__name__)
-        self.model_prediction = ModelPrediction()
+        self.model_prediction = ModelPredictions()
         self.issue_prediction = IssueTypePrediction()
-        self.sentiment_prediction = SentimentPredictionML()
+        self.sentiment_prediction = SentimentPredictionBERT()
         self.start_time = None
         self.total_time = 0
         self.setup_layout()
@@ -83,7 +83,7 @@ class DashboardApp:
                     self.sentiment_prediction.club_reviews() # Step 2: Club reviews
                     self.sentiment_prediction.clean_and_preprocess_data() # Step 3: Clean and pre-process data
 
-                    fig_model = self.model_prediction.main(dash=True) # Step 4: Model prediction with visuals
+                    fig_model = self.model_prediction.get_predictions_and_Scores(dash=True) # Step 4: Model prediction with visuals
                     print("Model prediction generated.")
 
                     print("Preparing issue prediction visuals...")
@@ -95,7 +95,7 @@ class DashboardApp:
                     print("Issue prediction visuals prepared.")
 
                     # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
-                    self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
+                    # self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
 
                     self.total_time = time.time() - self.start_time  # Calculate total time elapsed
                     return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True

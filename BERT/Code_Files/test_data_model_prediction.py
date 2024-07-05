@@ -141,7 +141,7 @@ class ModelPredictions(object):
 
         return DataLoader(ds, batch_size=batch_size, num_workers=0, collate_fn=data_collator)
 
-    def get_predictions_and_Scores(self):
+    def get_predictions_and_Scores(self, dash=False):
         device = self.set_device()
         saved_model = self.load_model()
         self.MAX_LEN = 160
@@ -206,7 +206,10 @@ class ModelPredictions(object):
             ])
         # Change the bar mode
         fig.update_layout(barmode='group')
-        fig.show()
+        if dash:
+            return fig
+        else:
+            fig.show()
 
         # Replace values / labels in the 'Prediction' column with actual Sentiments labels
         self.df['Predictions'] = self.df['Predictions'].replace({0: 'Negative', 1: 'Neutral', 2: 'Positive'})
