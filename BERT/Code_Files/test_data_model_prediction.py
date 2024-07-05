@@ -81,19 +81,19 @@ class ModelPredictions(object):
     def __init__(self):
         if sys.platform.startswith("win"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'cleaned_reviews_approach3_temp.csv')
+            self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
             self.saved_models_path = os.getcwd() + "/../Saved_Models/"
             self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
         elif sys.platform.startswith("darwin"):
             self.path = os.getcwd() + "/Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'cleaned_reviews_approach3.csv')
+            self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
             self.saved_models_path = os.getcwd() + "/Saved_Models/" 
             self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
         elif sys.platform.startswith("linux"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-            self.df = pd.read_csv(self.path + 'cleaned_reviews_approach3.csv')
+            self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
             self.saved_models_path = os.getcwd() + "/../Saved_Models/"
             self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
@@ -208,6 +208,9 @@ class ModelPredictions(object):
         fig.update_layout(barmode='group')
         fig.show()
 
+        # Replace values / labels in the 'Prediction' column with actual Sentiments labels
+        self.df['Predictions'] = self.df['Predictions'].replace({0: 'Negative', 1: 'Neutral', 2: 'Positive'})
+        
         print("Saving model to an external source..")
         self.df.to_csv(self.path + "final_bert_predictions.csv", index=False)
         print("Predictions saved successfully. Please check final_bert_predictions.csv")

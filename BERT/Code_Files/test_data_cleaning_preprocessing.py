@@ -22,19 +22,19 @@ class CleanAndPreprocess(object):
     if sys.platform.startswith("win"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
         try:
-          self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+          self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
         except FileNotFoundError:
            print("bert_final_3label.csv might not be formed yet. Waiting for file to be formed first.")
     elif sys.platform.startswith("darwin"):
        self.path = os.getcwd() + "/Model_Train_Data_Files/"
        try:
-        self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
        except FileNotFoundError:
           print("bert_final_3label.csv might not be formed yet. Waiting for file to be formed first.")
     elif sys.platform.startswith("linux"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
         try:
-          self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+          self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
         except FileNotFoundError:
            print("bert_final_3label.csv might not be formed yet. Waiting for file to be formed first.")
 
@@ -56,13 +56,13 @@ class CleanAndPreprocess(object):
   def check_mandatory_columns(self):
     if sys.platform.startswith("win"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
     elif sys.platform.startswith("darwin"):
       self.path = os.getcwd() + "/Model_Train_Data_Files/"
-      self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+      self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
     elif sys.platform.startswith("linux"):
         self.path = os.getcwd() + "/../Model_Train_Data_Files/"
-        self.df = pd.read_csv(self.path + 'bert_final_3label.csv') # File that needs to be cleaned before testing ML model
+        self.df = pd.read_csv(self.path + 'fetched_test_reviews.csv') # File that needs to be cleaned before testing ML model
 
     columns_to_check = ['Rating', 'Content', 'Sentiment']
     # Check if the columns exist in the DataFrame
