@@ -1,44 +1,54 @@
 Created Date,Rating,Source,Sentiment,Content,Prediction,Issues
-2024-06-27T00:45:28Z,5,Trustpilot,2,ordered a lens hood for a lens which is not current. not only did you have a new boxed one it was delivered in less than 24 hours.,Negative,{'Electronics'}
-2024-06-26T20:18:33Z,5,Trustpilot,2,helpful staff at the glasgow store,Positive,{'Customer service'}
-2024-06-26T18:46:37Z,5,Trustpilot,2,helpful on the phone before i ordered online. there was a minor problem with the delivery but quickly resolved and i received the camera and lens as promised,Positive,{'Electronics'}
-2024-06-26T17:32:10Z,5,Trustpilot,2,prompt service and delivery of goods,Positive,{'No Issue'}
-2024-06-26T15:58:26Z,5,Trustpilot,2,"camera was available from the website at a good price. next day delivery worked exactly as it should, with dpd informing us of one hour delivery slot in advance. could not ask for more.",Positive,{'Electronics'}
-2024-06-26T15:31:14Z,5,Trustpilot,2,part exchanging old lens for a new lens. best price for both and very easy process. good communication.,Positive,{'Electronics'}
-2024-06-26T15:30:52Z,5,Trustpilot,2,excellent service,Positive,{'No Issue'}
-2024-06-26T14:01:37Z,5,Trustpilot,2,"excellent! great film, delivered quickly. very pleased.",Positive,{'No Issue'}
-2024-06-26T12:14:18Z,5,Trustpilot,2,"excellent & speedy, well communicated service!",Positive,{'No Issue'}
-2024-06-26T10:56:21Z,5,Trustpilot,2,excellent product delivered on time but the communications were mixed messages,Positive,{'Delivery'}
-2024-06-26T10:33:44Z,5,Trustpilot,2,"accurate product description, prompt delivery. all in all great service.",Positive,{'No Issue'}
-2024-06-26T10:28:57Z,5,Trustpilot,2,great service and great prices. very pleased with the level of communication which kept me updated but not bombarded with emails,Positive,{'No Issue'}
-2024-06-26T10:25:16Z,5,Trustpilot,2,"the item ordered was delivered as described, i decided it was not what i wanted, the return was simple and courteous, wex are probably my favourite source of used camera gear, i only wish dpd could leave my parcels at the local post office",Positive,{'Electronics'}
-2024-06-26T10:21:04Z,5,Trustpilot,2,"i have used wex photo video many times over the past couple of years. i have bought both new lenses and used lenses, and have traded-in my own equipment. i have found them to be professional, extremely helpful and friendly, and very trustworthy. i would confidently say wex photo video is my go-to store for photography equipment.",Positive,{'Delivery'}
-2024-06-26T10:20:01Z,5,Trustpilot,2,good fast efficient service,Positive,{'No Issue'}
-2024-06-26T10:14:05Z,5,Trustpilot,2,"clear rules, fast delivery, great contact, competitive prices.",Positive,{'No Issue'}
-2024-06-26T10:07:09Z,5,Trustpilot,2,fast service,Positive,{'No Issue'}
-2024-06-26T10:06:19Z,5,Trustpilot,2,"i have used wex for years. always had a good experience. sellers are always friendly, patient and informative. if you need equipment new or used i would totally recommend wex",Positive,{'No Issue'}
-2024-06-26T10:02:09Z,5,Trustpilot,2,amazing service as usual!,Positive,{'No Issue'}
-Tue Jun 25 17:59:25 2024,5,PowerReviews,2,known dealer and great as ever,Positive,{'No Issue'}
-Tue Jun 25 17:14:36 2024,5,PowerReviews,2,always an easy experience and you seem to have exactly what i need whenever i need it.,Positive,{'No Issue'}
-Tue Jun 25 15:53:13 2024,5,PowerReviews,2,the booking process was fine,Positive,{'No Issue'}
-Tue Jun 25 14:06:04 2024,5,PowerReviews,2,ok,Positive,{'No Issue'}
-Tue Jun 25 13:48:32 2024,5,PowerReviews,2,clear and straightforward.,Positive,{'No Issue'}
-Tue Jun 25 12:22:20 2024,5,PowerReviews,2,great!,Positive,{'No Issue'}
-Tue Jun 25 10:53:42 2024,5,PowerReviews,2,very easy once registered,Positive,{'No Issue'}
-Mon Jun 24 21:52:54 2024,3,PowerReviews,1,i had to create a new account with a different email because the change password function does not work! otherwise process was ok.,Neutral,{'No Issue'}
-Mon Jun 24 21:38:21 2024,1,PowerReviews,0,"terrible. tried to pay by card. does not work. forced to pay by paypal, giving paypay information i do not want them to have. i need my purchase quickly before a trip, but will not use wex again unless this is fixed.",Negative,{'Payment'}
-Mon Jun 24 20:55:21 2024,5,PowerReviews,2,easy,Positive,{'No Issue'}
-Mon Jun 24 19:00:44 2024,5,PowerReviews,2,always excellent,Positive,{'No Issue'}
-Mon Jun 24 16:03:39 2024,5,PowerReviews,2,"as always, easy.",Positive,{'No Issue'}
-Mon Jun 24 14:45:36 2024,5,PowerReviews,2,smooth and quick,Positive,{'No Issue'}
-Mon Jun 24 14:40:56 2024,5,PowerReviews,2,always is easy and quick. always use you. many thanks,Positive,{'No Issue'}
-Mon Jun 24 14:11:00 2024,5,PowerReviews,2,i have been waiting for ages to be able to buy this camera. the alert system was so good to allow me to buy it as soon as it cam back in to stock! would recommend 10/5!,Positive,{'Electronics'}
-Mon Jun 24 13:41:00 2024,5,PowerReviews,2,"amazing as always, top service!",Positive,{'No Issue'}
-Mon Jun 24 12:52:15 2024,5,PowerReviews,2,easy shopping,Positive,{'No Issue'}
-Mon Jun 24 12:27:15 2024,5,PowerReviews,2,easy to use website. great prices. have used in the past and been very pleased.,Positive,{'No Issue'}
-Mon Jun 24 12:01:45 2024,5,PowerReviews,2,great as per usual,Positive,{'No Issue'}
-Mon Jun 24 11:36:04 2024,5,PowerReviews,2,excellent as always,Positive,{'No Issue'}
-Mon Jun 24 11:12:08 2024,5,PowerReviews,2,easy straight forward,Positive,{'No Issue'}
-Mon Jun 24 10:44:22 2024,5,PowerReviews,2,great,Positive,{'No Issue'}
-Mon Jun 24 10:12:42 2024,5,PowerReviews,2,usual easy to order experience. i am a regular customer of wex both buying and selling and they are without doubt the best.,Positive,{'No Issue'}
-Sun Jun 23 21:10:40 2024,5,PowerReviews,2,very easy to find what i wanted amongst a large array of products,Positive,{'No Issue'}
+2024-07-05T09:13:45Z,5,Trustpilot,2,always a good service website is clear and easy to use goods delivered on time,Positive,{'Delivery'}
+2024-07-05T08:42:47Z,5,Trustpilot,2,easy to use website. no problem finding and purchasing exactly what i wanted with ease.,Positive,"{'No Issue', 'General'}"
+2024-07-05T06:03:29Z,5,Trustpilot,2,"perfect product, great service",Positive,{'No Issue'}
+2024-07-04T22:50:36Z,5,Trustpilot,2,great telephone advice and speedy delivery. many thanks,Positive,{'No Issue'}
+2024-07-04T22:30:26Z,2,Trustpilot,0,"i decided to use wex to sell my sony a7riia and 2 lens for cash and also purchase a used fuji x100f on finance. after receiving my quote i sent my gear down for appraisal. the next day i also bought a used fuji x100f  on finance from wex web sales. while still waiting for a final quote for my sony gear, my used fuji was delivered. on initial inspection it became clear that the viewfinder shutter was faulty. this fault would have been obvious to notice before shipping from wex. i have since returned the fuji to wex in order for it to be repaired under there used 12 month guarantee. after there appraisal wex agreed with my grading of the sony camera and lens. unfortunately they informed me the quote for the camera body would be reduced from £850 down to £684. there stated reason was that the camera was an import and had 2 faults that needed to be repaired before they would buy it. the faults were minimal feedback when using the fn button and a intermittently stiff rear scroll wheel. they offered to send the camera away for a no obligation repair quote and if i agreed to the repair the cost would come of my final offer price i sold my 2 lens to them but asked for the camera body to be returned to me. after getting the camera body back i could not identify where they had seen fault. the fn button and rear wheel all were working great. in regard to the camera being an import, it is 5 years old and well out of the sony manufacturers warranty. it is as described by me and wex a grade 9 used camera. i sent the camera body to mpb. com 2 days ago. they found no faults and today i received £870 for the camera body. looking forward to receiving my fuji x100f after the repair.",Negative,{'Electronics'}
+2024-07-04T16:36:31Z,5,Trustpilot,2,"everyone was really helpful when i called to place my order, i have bought from them before and would highly recommend them.",Positive,{'No Issue'}
+2024-07-04T15:05:29Z,5,Trustpilot,2,amazing service. very fast shipping!,Positive,{'No Issue'}
+2024-07-04T14:26:48Z,5,Trustpilot,2,"great service, speedy delivery, as always!",Positive,{'No Issue'}
+2024-07-04T14:12:07Z,5,Trustpilot,2,"excellent, fast and helpful service, thank you",Positive,{'No Issue'}
+2024-07-04T13:46:12Z,5,Trustpilot,2,"thank you, great price and rapid delivery. my first order so will use again.",Positive,{'No Issue'}
+2024-07-04T13:41:31Z,5,Trustpilot,2,"ideal for long walks, good clarity and reasonable fov.",Positive,{'No Issue'}
+2024-07-04T13:16:23Z,5,Trustpilot,2,great as always,Positive,{'No Issue'}
+2024-07-04T13:06:11Z,5,Trustpilot,2,excellent price for a £700 epson photo printer - the cheapest i found by £50 and over £150 less than the manufacturers rrp. i was able to choose which day it was delivered by dpd which was really useful. delivery was problem free - the printer arrived in perfect condition. very happy with this purchase!,Positive,"{'No Issue', 'General'}"
+2024-07-04T12:49:26Z,5,Trustpilot,2,easy to order. prompt delivery to a friend in uk who is bringing it to me in cyprus where i live next week. my son david unwin bought his om1 mk 2 from you and recommended me to buy from you because of the good service you offered. looking forward to using it,Positive,{'No Issue'}
+2024-07-04T11:51:50Z,1,Trustpilot,0,the kenro film scanner you sold me is pants!,Negative,{'No Issue'}
+2024-07-04T11:39:30Z,1,Trustpilot,0,i do not recommend it,Negative,{'No Issue'}
+2024-07-04T11:10:51Z,5,Trustpilot,2,"fast efficient service with prompt delivery and the lge package which contained a computer monitor was in pristine condition, the courier obviously took care with the item!",Positive,{'Packaging'}
+2024-07-04T11:02:16Z,5,Trustpilot,2,"always professional. thank your god. somebody can be. they do what is written on the tin, they are a dying breed",Positive,{'No Issue'}
+2024-07-04T11:00:33Z,5,Trustpilot,2,"i ordered a lens from wex and went on the waiting list for new stock. wex were very thorough in keeping me updated about the status of the order periodically. i had been away when the lens arrived in stock and it was held onto due to my notification that i was away. as agreed, the lens arrived on that agreed date. fantastic efficient service and excellent customer focus. well done.",Positive,{'Electronics'}
+2024-07-04T10:25:40Z,5,Trustpilot,2,"bought a pre owned item from wex online, plenty of choice and availability, descriptions and pictures are very accurate. an email query i sent was answered immediately, all in all this was a very good buying experience and i will happily use them again in the future.",Positive,{'No Issue'}
+2024-07-04T10:25:22Z,5,Trustpilot,2,i have bought from wex several times and they always provide an excellent service whether you are buying new or used. their trade in prices are always among the best i receive and they are fair in their assessment when they receive the items. you can buy from wex with confidence,Positive,{'Delivery'}
+2024-07-04T10:24:49Z,5,Trustpilot,2,good description and price with fast delivery,Positive,{'No Issue'}
+2024-07-04T10:23:46Z,5,Trustpilot,2,"excellent value, quick & professional service, i especially like how they treat your purchases with care by sending them in strong rigid well packed boxes, not flimsy bags. all in all another faultless transaction yet again.",Positive,{'No Issue'}
+2024-07-04T10:15:49Z,5,Trustpilot,2,"easy ordering process, fast and efficient delivery!",Positive,{'No Issue'}
+2024-07-04T10:11:33Z,5,Trustpilot,2,"bought 2nd hand canon flash, grade 9 will it be any good? turns out apart from some polish to hot shoe and light marks above it was in mint condition and works flawlessly, will be back for more. pete, bristol",Neutral,{'No Issue'}
+2024-07-04T10:10:32Z,5,Trustpilot,2,i recently purchased a used lens from wex. it was delivered promptly and exactly as advertised. i will certainly use wex in future.,Positive,{'Electronics'}
+2024-07-04T10:04:48Z,5,Trustpilot,2,really helpful staff and patient with it. 1st class service i cannot fault it.,Positive,{'Customer service'}
+2024-07-04T10:00:48Z,5,Trustpilot,2,very happy. customer service in the shop was great.,Positive,{'Customer service'}
+Thu Jul  4 14:14:06 2024,5,PowerReviews,2,as always a great selection of products at the best prices with excellent delivery options.,Positive,{'No Issue'}
+Thu Jul  4 13:32:16 2024,1,PowerReviews,0,ok yo order but could not print out the order as the 'grt £20 off\. could not be cleared to print out the order!,Neutral,{'No Issue'}
+Thu Jul  4 13:14:51 2024,5,PowerReviews,2,very good as always,Positive,{'No Issue'}
+Thu Jul  4 12:49:00 2024,5,PowerReviews,2,no problems!,Positive,"{'No Issue', 'General'}"
+Thu Jul  4 12:05:59 2024,5,PowerReviews,2,super easy and quick.,Positive,{'No Issue'}
+Thu Jul  4 11:22:54 2024,4,PowerReviews,2,monzo payment failed twice through google pay.,Negative,{'Payment'}
+Thu Jul  4 11:15:44 2024,4,PowerReviews,2,cool,Neutral,{'No Issue'}
+Thu Jul  4 07:50:06 2024,5,PowerReviews,2,excellent online service,Positive,{'No Issue'}
+Wed Jul  3 20:52:34 2024,5,PowerReviews,2,no problems with service so far,Positive,"{'No Issue', 'General'}"
+Wed Jul  3 17:17:42 2024,5,PowerReviews,2,very straight forwarsy,Positive,{'No Issue'}
+Wed Jul  3 16:48:48 2024,5,PowerReviews,2,easy to use website. good search facility. trusted seller as the physical shop is near to my place of work.,Positive,{'No Issue'}
+Wed Jul  3 16:29:02 2024,5,PowerReviews,2,all good and straightforward,Positive,{'No Issue'}
+Wed Jul  3 15:41:57 2024,5,PowerReviews,2,smooth and simple procedure to purchase.,Positive,{'No Issue'}
+Wed Jul  3 15:37:04 2024,5,PowerReviews,2,"very good - speedy service, easy to use website",Positive,{'No Issue'}
+Wed Jul  3 14:34:14 2024,5,PowerReviews,2,seamless !,Positive,{'No Issue'}
+Wed Jul  3 13:04:51 2024,5,PowerReviews,2,easy and informative,Positive,{'No Issue'}
+Wed Jul  3 12:07:21 2024,5,PowerReviews,2,ok,Positive,{'No Issue'}
+Wed Jul  3 10:14:00 2024,5,PowerReviews,2,easy,Positive,{'No Issue'}
+Wed Jul  3 09:32:51 2024,5,PowerReviews,2,excellent as always,Positive,{'No Issue'}
+Tue Jul  2 21:53:31 2024,5,PowerReviews,2,great choices and clear concise information,Positive,{'No Issue'}
+Tue Jul  2 21:30:11 2024,5,PowerReviews,2,smooth,Positive,{'No Issue'}
+Tue Jul  2 19:13:01 2024,4,PowerReviews,2,great experience,Positive,{'No Issue'}
+Tue Jul  2 19:05:27 2024,5,PowerReviews,2,no problems with purchase,Positive,"{'No Issue', 'General'}"
+Tue Jul  2 17:26:40 2024,5,PowerReviews,2,very good service,Positive,{'No Issue'}
+Tue Jul  2 17:01:35 2024,5,PowerReviews,2,excellent as usual!,Positive,{'No Issue'}

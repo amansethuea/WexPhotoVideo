@@ -5,6 +5,7 @@ import pandas as pd
 from test_data_model_prediction import ModelPredictions
 from test_data_issue_type_prediction import IssueTypePrediction
 from sentiment_prediction_bert import SentimentPredictionBERT
+from clear_data import ClearAllData
 import os
 import sys
 import time
@@ -31,6 +32,7 @@ class DashboardApp:
         self.model_prediction = ModelPredictions()
         self.issue_prediction = IssueTypePrediction()
         self.sentiment_prediction = SentimentPredictionBERT()
+        self.clear_all_data = ClearAllData()
         self.start_time = None
         self.total_time = 0
         self.setup_layout()
@@ -77,6 +79,7 @@ class DashboardApp:
                     fo = open(self.input_time_file, "w")
                     fo.write(str(time_range).strip())
                     fo.close()
+                    self.clear_all_data.clear_data()
                     print("Generating model prediction...")
                     # Pre-requisites before visual displays
                     self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction
@@ -95,7 +98,7 @@ class DashboardApp:
                     print("Issue prediction visuals prepared.")
 
                     # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
-                    # self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
+                    self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
 
                     self.total_time = time.time() - self.start_time  # Calculate total time elapsed
                     return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True

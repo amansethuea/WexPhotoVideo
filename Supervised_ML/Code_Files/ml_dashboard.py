@@ -5,6 +5,7 @@ import pandas as pd
 from test_data_model_prediction import ModelPrediction
 from test_data_issue_type_prediction import IssueTypePrediction
 from sentiment_prediction_ml import SentimentPredictionML
+from clear_data import ClearAllData
 import os
 import sys
 import time
@@ -31,6 +32,7 @@ class DashboardApp:
         self.model_prediction = ModelPrediction()
         self.issue_prediction = IssueTypePrediction()
         self.sentiment_prediction = SentimentPredictionML()
+        self.clear_all_data = ClearAllData()
         self.start_time = None
         self.total_time = 0
         self.setup_layout()
@@ -77,6 +79,7 @@ class DashboardApp:
                     fo = open(self.input_time_file, "w")
                     fo.write(str(time_range).strip())
                     fo.close()
+                    self.clear_all_data.clear_data()
                     print("Generating model prediction...")
                     # Pre-requisites before visual displays
                     self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction

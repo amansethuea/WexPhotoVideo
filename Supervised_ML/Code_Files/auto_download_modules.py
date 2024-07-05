@@ -1,6 +1,11 @@
 import os
 import sys
 
+"""
+NOTE: Run only after activing virtual env
+Step 1 (If venv not already created): python -m venv myenvml (myenv is name of virtual environment)
+Step 2: myenvml\Scripts\activate (on windows machine)
+"""
 
 class ModuleDownload(object):
     def __init__(self):
