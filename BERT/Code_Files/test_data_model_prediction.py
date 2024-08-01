@@ -14,31 +14,15 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
 # ML and Evaluation Libraries
-from sklearn.pipeline import make_pipeline, Pipeline
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, ConfusionMatrixDisplay, f1_score
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, train_test_split, GridSearchCV
-from sklearn.metrics import precision_recall_fscore_support
-
-# Torch ML Libraries
-import transformers
-from transformers import BertModel, BertTokenizer, AdamW, get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
-from transformers import RobertaModel, RobertaTokenizer
+from sklearn.metrics import classification_report, precision_recall_fscore_support
+from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import torch
-from torch import nn, optim
+from torch import nn
 from torch.utils.data import Dataset, DataLoader
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification, Trainer, TrainingArguments, DistilBertConfig
-from transformers import DistilBertModel, DistilBertTokenizer
-from tqdm.auto import tqdm
-from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import DataCollatorWithPadding
-from sklearn.utils.class_weight import compute_class_weight
-from sentiment_classifier import SentimentClassifier
 
 # Other Libraries
 import warnings
-import time
 import sys
 import os
 
@@ -84,51 +68,46 @@ class ModelPredictions(object):
             self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
             self.saved_models_path = os.getcwd() + "/../Saved_Models/"
-            self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
         elif sys.platform.startswith("darwin"):
             self.path = os.getcwd() + "/Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
-            self.saved_models_path = os.getcwd() + "/Saved_Models/" 
-            self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
+            self.saved_models_path = os.getcwd() + "/Saved_Models/"
         elif sys.platform.startswith("linux"):
             self.path = os.getcwd() + "/../Model_Train_Data_Files/"
             self.df = pd.read_csv(self.path + 'cleaned_bert_final_3label.csv')
             self.df.Content = self.df.Content.astype(str)
             self.saved_models_path = os.getcwd() + "/../Saved_Models/"
-            self.saved_model_file = self.saved_models_path + "model_64_512_8_0.3_db_3label.pth"
 
-        # Setting the Batch Size, Max Length, Learning Rate, Dropout Rate
-        self.NAME = "db"
         self.BATCH_SIZE = 64
         self.MAX_LEN = 512
-        self.EPOCHS = 8
-        self.LEARNING_RATE = 2e-5
-        self.DROPOUT_RATE = 0.3
-
         self.MODEL_NAME = 'distilbert-base-uncased'
         self.tokenizer = DistilBertTokenizer.from_pretrained(self.MODEL_NAME)
 
-        self.sentiment_classifier = SentimentClassifier(n_classes=3)
-    
+        # Paths to the saved models
+        self.model_paths = {
+
+            0: os.path.join(self.saved_models_path, "model_64_512_8_0.3_db_24_negative.pth"),
+            1: os.path.join(self.saved_models_path, "model_64_512_8_0.3_db_42_neutral.pth"),
+            2: os.path.join(self.saved_models_path, "model_64_512_4_0.3_db_42_positive.pth")
+        }
+
+
     def set_device(self):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Device Found: {device}")
         return device
-    
-    def load_model(self):
+
+    def initialize_model(self, model_path):
         device = self.set_device()
-        
-        saved_model = self.sentiment_classifier
-        # Map the model to the appropriate device (CPU in this case)
-        saved_model.load_state_dict(torch.load(self.saved_model_file, map_location=device))
-        saved_model = saved_model.to(device)
-        saved_model = nn.DataParallel(saved_model) ## LIFESAVER!!
-        print(saved_model.eval())
-        print("Model loaded successfully")
-        return saved_model.eval()
-        
-    
+        model = DistilBertForSequenceClassification.from_pretrained(self.MODEL_NAME, num_labels=3)
+        state_dict = torch.load(model_path, map_location=device)
+        model.load_state_dict(state_dict, strict=False)
+        model = model.to(device)
+        model = nn.DataParallel(model)
+        model.eval()
+        return model
+
     def create_data_loader(self, df, tokenizer, max_len, batch_size):
         ds = ModelBuildTrainDataset(
             reviews=df['Content'].to_numpy(),
@@ -142,36 +121,53 @@ class ModelPredictions(object):
         return DataLoader(ds, batch_size=batch_size, num_workers=0, collate_fn=data_collator)
 
     def get_predictions_and_Scores(self, dash=False):
+         # Initialize models
+        self.models = {label: self.initialize_model(path) for label, path in self.model_paths.items()}
+
         device = self.set_device()
-        saved_model = self.load_model()
-        self.MAX_LEN = 160
+        self.MAX_LEN = 512
         test_data_loader = self.create_data_loader(self.df, self.tokenizer, self.MAX_LEN, self.BATCH_SIZE)
     
         all_preds = []
         all_targets = []
         print("Generating Predictions..")
+        
+        # Initialize predictions list with NaNs or placeholders
+        all_preds_placeholder = np.full(len(self.df), -1)
+
         with torch.no_grad():
             for d in test_data_loader:
                 input_ids = d["input_ids"].to(device)
                 attention_mask = d["attention_mask"].to(device)
-                targets = d["targets"].to(device)  # Assuming 'targets' column is 'labels'
+                targets = d["targets"].to(device)
 
-                outputs = saved_model(input_ids=input_ids, attention_mask=attention_mask)
-                if isinstance(outputs, tuple):
-                    logits = outputs[0]
-                else:
-                    logits = outputs
+                # Predict for each sample
+                for i in range(len(input_ids)):
+                    sentiment_label = self.df.iloc[i]['Sentiment']
+                    model = self.models[sentiment_label]
+                    
+                    outputs = model(input_ids=input_ids[i:i+1], attention_mask=attention_mask[i:i+1])
+                    logits = outputs.logits
+                    
+                    _, preds = torch.max(logits, dim=1)
+                    
+                    all_preds_placeholder[i] = preds.cpu().numpy()
 
-                _, preds = torch.max(logits, dim=1)
-                
-                all_preds.extend(preds.cpu().numpy())
                 all_targets.extend(targets.cpu().numpy())
-                
+
                 # Clear GPU cache
                 torch.cuda.empty_cache()
-        
-        all_preds = np.array(all_preds)
+
+        all_preds = np.array(all_preds_placeholder)
         all_targets = np.array(all_targets)
+
+        # Ensure predictions length matches DataFrame length
+        if len(all_preds) != len(self.df):
+            print(f"Warning: Number of predictions ({len(all_preds)}) does not match number of records in DataFrame ({len(self.df)})")
+            if len(all_preds) > len(self.df):
+                all_preds = all_preds[:len(self.df)]  # Adjust predictions to match DataFrame length
+            elif len(all_preds) < len(self.df):
+                all_targets = all_targets[:len(all_preds)]  # Adjust targets if fewer predictions are available
 
         print("Predictions generated successfully. Proceeding to calculate scores..")
         precision, recall, fscore, _ = precision_recall_fscore_support(all_targets, all_preds, average='weighted')
@@ -183,8 +179,12 @@ class ModelPredictions(object):
         print(classification_report(all_targets, all_preds))
         print()
 
-        self.df['Predictions'] = all_preds
-        
+        # Ensure DataFrame length matches length of predictions
+        if len(all_preds) == len(self.df):
+            self.df['Predictions'] = all_preds
+        else:
+            print("Error: The length of predictions does not match the length of DataFrame.")
+
         label_mapping = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
 
         # Map numerical labels to sentiment labels
@@ -207,6 +207,12 @@ class ModelPredictions(object):
         # Change the bar mode
         fig.update_layout(barmode='group')
         if dash:
+            # Replace values / labels in the 'Prediction' column with actual Sentiments labels
+            self.df['Predictions'] = self.df['Predictions'].replace({0: 'Negative', 1: 'Neutral', 2: 'Positive'})
+        
+            print("Saving model to an external source..")
+            self.df.to_csv(self.path + "final_bert_predictions.csv", index=False)
+            print("Predictions saved successfully. Please check final_bert_predictions.csv")
             return fig
         else:
             fig.show()
@@ -221,4 +227,3 @@ class ModelPredictions(object):
 if __name__ == "__main__":
     obj = ModelPredictions()
     obj.get_predictions_and_Scores()
-    
