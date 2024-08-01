@@ -23,6 +23,7 @@ from transformers import DataCollatorWithPadding
 
 # Other Libraries
 import warnings
+import time
 import sys
 import os
 
@@ -123,6 +124,7 @@ class ModelPredictions(object):
     def get_predictions_and_Scores(self, dash=False):
          # Initialize models
         self.models = {label: self.initialize_model(path) for label, path in self.model_paths.items()}
+        time.sleep(5)
 
         device = self.set_device()
         self.MAX_LEN = 512
