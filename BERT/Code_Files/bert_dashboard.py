@@ -9,6 +9,10 @@ from clear_data import ClearAllData
 import os
 import sys
 import time
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class DashboardApp:
     def __init__(self):
@@ -75,35 +79,35 @@ class DashboardApp:
             if n_clicks:
                 try:
                     self.start_time = time.time()  # Start timing when button is clicked
-                    print(f"Time Range: {time_range}")
-                    fo = open(self.input_time_file, "w")
-                    fo.write(str(time_range).strip())
-                    fo.close()
+                    logging.info(f"Time Range: {time_range}")
+                    with open(self.input_time_file, "w") as fo:
+                        fo.write(str(time_range).strip())
                     self.clear_all_data.clear_data()
-                    print("Generating model prediction...")
+                    logging.info("Generating model prediction...")
+                    
                     # Pre-requisites before visual displays
-                    self.sentiment_prediction.reviews_extraction_mechanism() # Step 1: Reviews extraction
-                    self.sentiment_prediction.club_reviews() # Step 2: Club reviews
-                    self.sentiment_prediction.clean_and_preprocess_data() # Step 3: Clean and pre-process data
+                    self.sentiment_prediction.reviews_extraction_mechanism()  # Step 1: Reviews extraction
+                    self.sentiment_prediction.club_reviews()  # Step 2: Club reviews
+                    self.sentiment_prediction.clean_and_preprocess_data()  # Step 3: Clean and pre-process data
 
-                    fig_model = self.model_prediction.get_predictions_and_Scores(dash=True) # Step 4: Model prediction with visuals
-                    print("Model prediction generated.")
+                    fig_model = self.model_prediction.get_predictions_and_Scores(dash=True)  # Step 4: Model prediction with visuals
+                    logging.info("Model prediction generated.")
 
-                    print("Preparing issue prediction visuals...")
+                    logging.info("Preparing issue prediction visuals...")
                     # Pre-requisites before visual displays
-                    self.issue_prediction.pre_requisite_before_visuals() # Step 5: Issue prediction mechanism
+                    self.issue_prediction.pre_requisite_before_visuals()  # Step 5: Issue prediction mechanism
 
                     fig_sentiment_dist = self.issue_prediction.reviews_sentiment_distribution(dash=True)
                     fig_issue_dist_list = self.issue_prediction.issue_distribution_histogram(dash=True)
-                    print("Issue prediction visuals prepared.")
+                    logging.info("Issue prediction visuals prepared.")
 
                     # Disabled llama3 since it becomes very slow since it requires 16GB CPU atleast and my PC has only 4 GB spec
-                    self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
+                    # self.sentiment_prediction.issue_reason_predicted_data() # Step 6: Reason behind issue prediction
 
                     self.total_time = time.time() - self.start_time  # Calculate total time elapsed
                     return fig_model, fig_sentiment_dist, fig_issue_dist_list[0], fig_issue_dist_list[1], True
                 except Exception as e:
-                    print(f"Error generating predictions: {e}")
+                    logging.error(f"Error generating predictions: {e}")
                     return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
             return go.Figure(), go.Figure(), go.Figure(), go.Figure(), False
 
@@ -142,10 +146,10 @@ class DashboardApp:
                 if os.path.exists(self.issues_file):
                     return dcc.send_file(self.issues_file)
                 else:
-                    print("File not found.")
+                    logging.error("File not found.")
                     return dcc.send_string('File not found', filename='error.txt')
             except Exception as e:
-                print(f"Error preparing download: {e}")
+                logging.error(f"Error preparing download: {e}")
                 return dcc.send_string('Error preparing download', filename='error.txt')
 
     def run(self):
