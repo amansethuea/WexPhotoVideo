@@ -20,6 +20,8 @@ class ModuleDownload(object):
         print("Installing packages in requirement.txt")
         os.system(f"{sys.executable} -m pip install -r {self.requirements_txt_file}")
         print("Packages Installed. Proceeding")
+        print("Upgrading Ollama package explicitly to latest irrespective of mentioned version in requirements.txt")
+        os.system(f"{sys.executable} -m pip install --upgrade ollama")
         print("Downloading spaCy large pre-trained model")
         os.system(f"{sys.executable} -m spacy download en_core_web_lg")
         print()
