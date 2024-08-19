@@ -5,7 +5,7 @@ import ollama
 import pandas as pd
 
 # Other Libraries
-import os
+import os 
 import time
 import sys
 import concurrent.futures
@@ -67,4 +67,4 @@ class ReasonBehindIssuePrediction(object):
 
 if __name__ == "__main__":
     obj = ReasonBehindIssuePrediction()
-    obj.reason_prediction(max_workers=10)
+    obj.reason_prediction(max_workers=5)

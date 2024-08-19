@@ -48,10 +48,10 @@ class IssueTypePrediction(object):
             "Packaging": ["packaging", "package", "pack"],
             "Time": ["late", "delayed", "time issue", "too long", "long to arrive"],
             "Delivery": ["delivery issue", "shipment problem", "shipping issue", "arrive",
-                         "arrival", "late delivery", "delivery late", "late", "time", "times"],
+                         "arrival", "late delivery", "delivery late", "late", "time", "times", "wrong address"],
             "Customer service": ["customer service", "support issue", "service complaint",
                                  "rude", "aggressive", "tone", "behaviour", "nonsense",
-                                 "not understand", "staff", "insult", "salesperson"],
+                                 "not understand", "staff", "insult", "salesperson", "no explanation"],
             "Payment": ["payment", "pay", "money"],
             "General": ["issue", "problem", "complaint"]
         }
