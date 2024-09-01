@@ -29,8 +29,7 @@ class ReasonBehindIssuePrediction(object):
             review = row['Content']
             response = ollama.chat(model='llama3', messages=[{
                 'role': 'user', 
-                #'content': f"Could you tell me if there is any issue with this customer review: '{review}'. Keep the answer within 20 words."
-                'content': f"Could you tell me if there is any issue with this customer review: '{review}'. Keep the answer within 10 words and as comma separated keywords."
+                'content': f"Could you tell me if there is any issue with this customer review: '{review}'. Keep the answer within 10 words and as comma separated keywords. The keywords must contain if there is any electronic product mentioned only if there is any issue detected in the review"
             }])
             return index, response['message']['content']
         return index, ''
