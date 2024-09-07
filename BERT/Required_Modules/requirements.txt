@@ -7,7 +7,7 @@ contractions==0.1.73
 demoji==1.1.0
 spacy==3.7.4
 streamlit==1.36.0
-ollama==0.3.1
+ollama==0.3.2
 kaleido==0.2.1
 transformers==4.42.3
 torch==2.3.1

@@ -43,7 +43,7 @@ class SentimentPredictionBERT(object):
         self.issue_prediction.main(stream_lit=stream_lit)
     
     def issue_reason_predicted_data(self):
-        self.issue_reason.reason_prediction(max_workers=10)
+        self.issue_reason.reason_prediction(max_workers=2)
     
     def main(self, stream_lit=False):
         self.clear_data()
