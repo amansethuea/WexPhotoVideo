@@ -15,5 +15,5 @@ RUN python -m spacy download en_core_web_lg
 # Set the working directory where the script is located
 WORKDIR /app/BERT/Code_Files
 
-# Run the Python script using shell syntax
-CMD python bert_dashboard.py
+# Use ENTRYPOINT to specify the command to run
+ENTRYPOINT ["python", "bert_dashboard.py"]

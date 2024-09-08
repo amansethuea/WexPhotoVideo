@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wex-deployment
+  labels:
+    app: wex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wex
+  template:
+    metadata:
+      labels:
+        app: wex
+    spec:
+      containers:
+      - name: wex-container
+        image: amanseth91/wex:1725779385
+        ports:
+        - containerPort: 8050
+        #readinessProbe:
+          #httpGet:
+          #path: /
+          #port: 8050
+          #initialDelaySeconds: 5
+          #periodSeconds: 10
+        #startupProbe:
+          #httpGet:
+            #path: /
+            #port: 8050
+          #failureThreshold: 30
+          #periodSeconds: 10
+        command: ["python", "bert_dashboard.py"]   # Specify CMD here
+      imagePullSecrets:
+      - name: dockerhub-secret   # Reference to the Docker Hub secret
+
