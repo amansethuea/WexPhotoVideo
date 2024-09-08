@@ -153,7 +153,7 @@ class DashboardApp:
                 return dcc.send_string('Error preparing download', filename='error.txt')
 
     def run(self):
-        self.app.run_server(debug=True)
+        self.app.run_server(debug=True, host="0.0.0.0")
 
     def format_time(self, seconds):
         minutes = seconds // 60

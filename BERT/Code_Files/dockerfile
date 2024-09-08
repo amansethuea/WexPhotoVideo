@@ -3,4 +3,5 @@ WORKDIR /app
 COPY . .
 RUN pip install -r BERT/Required_Modules/requirements.txt 
 RUN python -m spacy download en_core_web_lg
-CMD [ "bash" ]
+WORKDIR /app/BERT/Code_Files
+CMD [ "python bert_dashboard.py" ]
