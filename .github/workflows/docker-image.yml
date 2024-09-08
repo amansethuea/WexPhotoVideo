@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI/CD Workflow for Docker and GKE
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # Job 1: Build and Push Docker Image to Docker Hub
   build:
     runs-on: ubuntu-latest
 
@@ -30,3 +31,38 @@ jobs:
     # Step 5: Push the Docker image to Docker Hub
     - name: Push the Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}
+
+  # Job 2: Deploy the Docker Image to GKE
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Google Cloud SDK
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    # Step 3: Authenticate with GKE
+    - name: Authenticate with GKE
+      run: |
+        gcloud container clusters get-credentials wex-cluster-1 --zone us-central1-c --project gke-demo-434822
+
+    # Step 4: Set up kubectl
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    # Step 5: Update the deployment image in the Kubernetes deployment file and apply it
+    - name: Deploy to GKE
+      run: |
+        sed -i "s|image: amanseth91/wex:.*|image: ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}|g" BERT/Code_Files/k8-deploy.yml
+        kubectl apply -f BERT/Code_Files/k8-deploy.yml
