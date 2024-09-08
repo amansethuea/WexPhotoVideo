@@ -24,12 +24,12 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     # Step 4: Build the Docker image
-    - name: Build the Docker image
-      run: docker build . --file BERT/Code_Files/dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}
+    #- name: Build the Docker image
+    #  run: docker build . --file BERT/Code_Files/dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}
 
     # Step 5: Push the Docker image to Docker Hub
-    - name: Push the Docker image to Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}
+    #- name: Push the Docker image to Docker Hub
+    #  run: docker push ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}
 
     # Step 6: Set up Google Cloud SDK
     - name: Set up Google Cloud SDK
@@ -42,7 +42,8 @@ jobs:
     # Step 7: Authenticate with GKE
     - name: Authenticate with GKE
       run: |
-        gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
+        echo "${{ secrets.GCP_SA_KEY }}" > $HOME/gcloud-key.json
+        gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
         gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
         gcloud container clusters get-credentials wex-cluster-1 --zone us-central1-c
 
@@ -56,4 +57,5 @@ jobs:
     - name: Deploy to GKE
       run: |
         sed -i "s|image: amanseth91/wex:.*|image: ${{ secrets.DOCKER_USERNAME }}/wex:${{ env.TIMESTAMP }}|g" BERT/Code_Files/k8-deploy.yml
-        kubectl apply -f BERT/Code_Files/k8-deploy.yml -n wex
+        kubectl apply -f BERT/Code_Files/k8-deploy.yml
+
