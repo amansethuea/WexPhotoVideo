@@ -1,7 +1,19 @@
 FROM python:3.12.5-bullseye
+
+# Set the working directory
 WORKDIR /app
+
+# Copy all files to the container
 COPY . .
-RUN pip install -r BERT/Required_Modules/requirements.txt 
+
+# Install Python dependencies
+RUN pip install -r BERT/Required_Modules/requirements.txt
+
+# Download the SpaCy language model
 RUN python -m spacy download en_core_web_lg
+
+# Set the working directory where the script is located
 WORKDIR /app/BERT/Code_Files
-CMD [ "python bert_dashboard.py" ]
+
+# Run the Python script using shell syntax
+CMD python bert_dashboard.py
