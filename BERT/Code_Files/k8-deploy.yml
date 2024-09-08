@@ -16,22 +16,44 @@ spec:
     spec:
       containers:
       - name: wex-container
-        image: amanseth91/wex:1725779385
+        image: amanseth91/wex:1725785149
         ports:
         - containerPort: 8050
-        #readinessProbe:
-          #httpGet:
-          #path: /
-          #port: 8050
-          #initialDelaySeconds: 5
-          #periodSeconds: 10
-        #startupProbe:
-          #httpGet:
-            #path: /
-            #port: 8050
-          #failureThreshold: 30
-          #periodSeconds: 10
-        command: ["python", "bert_dashboard.py"]   # Specify CMD here
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8050
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /
+            port: 8050
+          failureThreshold: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "32Gi"
+            cpu: "8"
       imagePullSecrets:
       - name: dockerhub-secret   # Reference to the Docker Hub secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wex-service
+  labels:
+    app: wex
+spec:
+  selector:
+    app: wex
+  ports:
+    - protocol: TCP
+      port: 8085            # External port for the service within the cluster
+      targetPort: 8050       # Internal port where the container is running
+  type: ClusterIP           # Exposes the service only within the cluster
 
